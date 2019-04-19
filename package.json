@@ -1,0 +1,26 @@
+{
+  "name": "thetincanrewrite",
+  "version": "1.0.0",
+  "description": "TheTinCan(ttc)",
+  "main": "node index.js",
+  "scripts": {
+    "test": "node index.js",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "ttc",
+    "thetincan",
+    "discord",
+    "discord",
+    "bot",
+    "discord.js"
+  ],
+  "author": "TheSkyHero",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "firebase-admin": "^7.2.0",
+    "moment": "^2.24.0",
+    "request": "^2.88.0"
+  }
+}
