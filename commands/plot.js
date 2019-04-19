@@ -4,7 +4,7 @@ exports.run = (message) => {
             let m = message.content.replace(new RegExp(message.content.slice(0, message.content.indexOf(" ")) + " "), "")
             request.get(
                 {
-                    "url": `http://api.wolframalpha.com/v2/query?appid=${process.env.wolfram_key}&input=${toHex("plot " + m)}&output=json`,
+                    "url": `http://api.wolframalpha.com/v2/query?appid=${process.env.wolfram_key}&input=${toHex("plot " + m.replace(/`/gi, ""))}&output=json`,
                     "json": true,
                     "headers": {'User-Agent': 'request'}
                 },
