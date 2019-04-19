@@ -4,6 +4,7 @@ Unfinished discord.js bot.
 ## Future Updates Info :
 - Pending Commands : blacklist, ban, mute, kick, tempmute, tempban, reboot, uptime, info.
 - Pending Features : respond on mention, include result image in math.js's output.
+- Problems : Identity change isn't functional yet.
 
 ## Invites :
 - Add Bot To Your Server : https://discordapp.com/oauth2/authorize?client_id=564009002699194368&scope=bot
