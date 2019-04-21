@@ -27,7 +27,7 @@ exports.run = (message) => {
                         if (!answer) {
                             for (let i = 0; i < body.queryresult.pods.length; i++) {
                                 const pod = body.queryresult.pods[i]
-                                if ((pod.id == "Solution" || pod.id == "DecimalApproximation" || pod.id == "Result") && pod.numsubpods > 0) {
+                                if ((pod.title == "Result" || pod.id == "Solution" || pod.id == "DecimalApproximation" || pod.id == "Result") && pod.numsubpods > 0) {
                                     answer = pod.subpods[0].plaintext
                                     break;
                                 }
