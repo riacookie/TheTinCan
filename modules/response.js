@@ -49,7 +49,7 @@ exports.create = (config) => {
         result = {
             "embed": {
                 "embed": {
-                    "color": config.color || 0x000000,
+                    "color": config.color || 0x100b42,
                     "title": config.title,
                     "author": {
                         "name": config.author.tag,
@@ -82,7 +82,7 @@ exports.create = (config) => {
         result = {
             "embed": {
                 "embed": {
-                    "color": config.color || 0x000000,
+                    "color": config.color || 0x100b42,
                     "title": config.title,
                     "author": {
                         "name": config.author.tag,
