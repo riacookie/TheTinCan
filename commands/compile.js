@@ -103,18 +103,18 @@ exports.run = (message) => {
                 let fields = {};
                 if (body && body.program_output) {
                     if (body.program_output.length <= 1000) {
-                        fields["Output"] = "``` " + body.program_output.replace(/```/gi, "`​`​`") + "```";
+                        fields["Output"] = "``` \r\n" + body.program_output.replace(/```/gi, "`​`​`") + "```";
                     }
                     else {
-                        fields["Output"] = "``` " + body.program_output.slice(0, 900).replace(/```/gi, "`​`​`") + "``` output too large, max limit : 1000 characters"
+                        fields["Output"] = "``` \r\n" + body.program_output.slice(0, 900).replace(/```/gi, "`​`​`") + "``` output too large, max limit : 1000 characters"
                     }
                 }
                 if (body && body.program_error) {
                     if (body.program_error.length <= 500) {
-                        fields["Error"] = "``` " + body.program_error.replace(/```/gi, "`​`​`") + "```";
+                        fields["Error"] = "```fix \r\n" + body.program_error.replace(/```/gi, "`​`​`") + "```";
                     }
                     else {
-                        fields["Error"] = "``` " + body.program_error.slice(0, 500).replace(/```/gi, "`​`​`") + "``` error too large, max limit : 500 characters"
+                        fields["Error"] = "```fix \r\n" + body.program_error.slice(0, 500).replace(/```/gi, "`​`​`") + "``` error too large, max limit : 500 characters"
                     }
                 }
                 if (body && body.compiler_error) {
@@ -126,7 +126,7 @@ exports.run = (message) => {
                     }
                 }
                 if (!body) {
-                    fields["Error"] = "Program timed out";
+                    fields["Error"] = "```fix\r\nProgram timed out```";
                 }
                 if (body && body.status) {
                     fields["ExitCode"] = body.status;
