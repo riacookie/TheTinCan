@@ -33,21 +33,19 @@ exports.run = (message) => {
                                 answer = {};
                                 for (let i = 0; i < arr.length; i++) {
                                     const line = arr[i];
-                                    if (line.includes("|")) {
-                                        arr[i] = line.split('|')[2] || line.split('|')[1] || line.split('|')[0];
-                                        answer[`${i}`] = arr[i];
-                                    }
+                                    arr[i] = line.split('|')[2] || line.split('|')[1] || line.split('|')[0] || line;
+                                    answer[`${i}`] = arr[i];
                                 }
-                                
+                            }
+                            else {
+                                answer = [answer];
                             }
                             response.send(message, 
                                 response.create({
                                     "author": message.author,
-                                    "title": `Definition of "${m}" : `,
+                                    "title": `Definition of ${m} : `,
                                     "mention": true,
-                                    "fields": [
-                                        answer
-                                    ],
+                                    "fields": answer,
                                     "seperator": ".",
                                     "error": "Something went wrong, define.js isn't working properly"
                                 })
