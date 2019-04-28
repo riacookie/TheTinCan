@@ -100,6 +100,10 @@ exports.run = (message) => {
                 "code": code
             }, 5000, (err, res, body) => {
                 debug(err);
+				if (!body) {
+					response.error(message, 'program timeout');
+					return;
+				}
                 let fields = {};
                 if (body.program_output) {
                     if (body.program_output.length <= 1000) {
