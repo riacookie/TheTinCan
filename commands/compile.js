@@ -14,6 +14,9 @@ exports.run = (message) => {
                 let n = wandbox.languages.lower.indexOf(m.toLowerCase());
                 if (n != -1) {
                     cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][0];
+					if (cmplr.includes('head') && wandbox.compilers.normal[wandbox.languages.normal[n]][1]) {
+							cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][1];
+					}
                 }
                 else {
                     n = wandbox.compilers_arr.lower.indexOf(m.toLowerCase());
