@@ -34,7 +34,7 @@ exports.run = (message) => {
                                 for (let i = 0; i < arr.length; i++) {
                                     const line = arr[i];
                                     arr[i] = line.split('|')[2] || line.split('|')[1] || line.split('|')[0] || line;
-                                    answer[`${i}`] = arr[i];
+                                    if (!arr[i].endsWith('meanings)')) answer[`${i}`] = arr[i];
                                 }
                             }
                             else {
@@ -45,6 +45,7 @@ exports.run = (message) => {
                                     "author": message.author,
                                     "title": `Definition of ${m} : `,
                                     "mention": true,
+                                    "linebreak": true,
                                     "fields": answer,
                                     "seperator": ".",
                                     "error": "Something went wrong, define.js isn't working properly"
