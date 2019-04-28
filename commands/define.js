@@ -28,6 +28,18 @@ exports.run = (message) => {
                             }
                         }
                         if (answer) {
+                            if (answer.includes("|")) {
+                                let arr = answer.split("\n");
+                                answer = {};
+                                for (let i = 0; i < arr.length; i++) {
+                                    const line = arr[i];
+                                    if (line.includes("|")) {
+                                        arr[i] = line.split('|')[2] || line.split('|')[1] || line.split('|')[0];
+                                        answer[`${i}`] = arr[i];
+                                    }
+                                }
+                                
+                            }
                             response.send(message, 
                                 response.create({
                                     "author": message.author,
@@ -36,7 +48,7 @@ exports.run = (message) => {
                                     "fields": [
                                         answer
                                     ],
-                                    "seperator": ":",
+                                    "seperator": ".",
                                     "error": "Something went wrong, define.js isn't working properly"
                                 })
                             );    
