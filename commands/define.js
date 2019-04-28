@@ -5,7 +5,7 @@ exports.run = (message) => {
             m = m.replace(/`/gi, "");
             request.get(
                 {
-                    "url": `http://api.wolframalpha.com/v2/query?appid=${process.env.wolfram_key}&input=${toHex('define '..m)}&output=json`,
+                    "url": `http://api.wolframalpha.com/v2/query?appid=${process.env.wolfram_key}&input=${toHex('define ' + m)}&output=json`,
                     "json": true,
                     "headers": {'User-Agent': 'request'}
                 },
