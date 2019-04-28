@@ -19,6 +19,9 @@ exports.run = (message) => {
                         let answer;
                         for (let i = 0; i < body.queryresult.pods.length; i++) {
                             const pod = body.queryresult.pods[i]
+                            if (pod.id == "Input" && pod.numsubpods > 0) {
+                                m = pod.subpods[0].plaintext.split(/ \||\|/)[0];
+                            }
                             if (pod.title == "Result" && pod.numsubpods > 0) {
                                 answer = pod.subpods[0].plaintext
                                 break;
