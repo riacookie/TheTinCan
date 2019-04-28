@@ -5,7 +5,7 @@ exports.run = (message) => {
             let cmplr;
             let code;
             if (message.content.includes("```")) {
-				message.content = message.content.replace(/\r\n```|\r```|\n```|\t```/gi, " ```");
+                message.content = message.content.replace(/\r\n```|\r```|\n```|\t```/gi, " ```");
                 m = message.content.match(new RegExp(`${process.env.prefix}([^\`\`\`]+)`))[1];
                 m = m.replace(m.slice(0, m.indexOf(" ") + 1), "");
                 if (m.endsWith(" ")) {
