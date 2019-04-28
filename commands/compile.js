@@ -100,12 +100,8 @@ exports.run = (message) => {
                 "code": code
             }, 5000, (err, res, body) => {
                 debug(err);
-				if (!body) {
-					response.error(message, 'program timeout');
-					return;
-				}
                 let fields = {};
-                if (body.program_output) {
+                if (body && body.program_output) {
                     if (body.program_output.length <= 1000) {
                         fields["Output"] = "``` " + body.program_output.replace(/```/gi, "`​`​`") + "```";
                     }
@@ -113,7 +109,7 @@ exports.run = (message) => {
                         fields["Output"] = "``` " + body.program_output.slice(0, 900).replace(/```/gi, "`​`​`") + "``` output too large, max limit : 1000 characters"
                     }
                 }
-                if (body.program_error) {
+                if (body && body.program_error) {
                     if (body.program_error.length <= 500) {
                         fields["Error"] = "``` " + body.program_error.replace(/```/gi, "`​`​`") + "```";
                     }
@@ -121,7 +117,7 @@ exports.run = (message) => {
                         fields["Error"] = "``` " + body.program_error.slice(0, 500).replace(/```/gi, "`​`​`") + "``` error too large, max limit : 500 characters"
                     }
                 }
-                if (body.compiler_error) {
+                if (body && body.compiler_error) {
                     if (body.compiler_error.length <= 500) {
                         fields["Compiler Error"] = "``` " + body.compiler_error.replace(/```/gi, "`​`​`") + "```";
                     }
@@ -129,7 +125,10 @@ exports.run = (message) => {
                         fields["Compiler Error"] = "``` " + body.compiler_error.slice(0, 500).replace(/```/gi, "`​`​`") + "``` error too large, max limit : 500 characters"
                     }
                 }
-                if (body.status) {
+                if (!body) {
+                    fields["Error"] = "Program timed out";
+                }
+                if (body && body.status) {
                     fields["ExitCode"] = body.status;
                 }
                 fields["Compiler"] = cmplr;
