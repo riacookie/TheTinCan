@@ -103,30 +103,30 @@ exports.run = (message) => {
                 let fields = {};
                 if (body && body.program_output) {
                     if (body.program_output.length <= 1000) {
-                        fields["Output"] = "``` \r\n" + body.program_output.replace(/```/gi, "`​`​`") + "```";
+                        fields["Output"] = "```\n" + body.program_output.replace(/```/gi, "`​`​`") + "```";
                     }
                     else {
-                        fields["Output"] = "``` \r\n" + body.program_output.slice(0, 900).replace(/```/gi, "`​`​`") + "``` output too large, max limit : 1000 characters"
+                        fields["Output"] = "```\n" + body.program_output.slice(0, 900).replace(/```/gi, "`​`​`") + "``` output too large, max limit : 1000 characters"
                     }
                 }
                 if (body && body.program_error) {
                     if (body.program_error.length <= 500) {
-                        fields["Error"] = "```fix \r\n" + body.program_error.replace(/```/gi, "`​`​`") + "```";
+                        fields["Error"] = "```fix\n" + body.program_error.replace(/```/gi, "`​`​`") + "```";
                     }
                     else {
-                        fields["Error"] = "```fix \r\n" + body.program_error.slice(0, 500).replace(/```/gi, "`​`​`") + "``` error too large, max limit : 500 characters"
+                        fields["Error"] = "```fix\n" + body.program_error.slice(0, 500).replace(/```/gi, "`​`​`") + "``` error too large, max limit : 500 characters"
                     }
                 }
                 if (body && body.compiler_error) {
                     if (body.compiler_error.length <= 500) {
-                        fields["Compiler Error"] = "``` " + body.compiler_error.replace(/```/gi, "`​`​`") + "```";
+                        fields["Compiler Error"] = "```fix \n" + body.compiler_error.replace(/```/gi, "`​`​`") + "```";
                     }
                     else {
                         fields["Compiler Error"] = "``` " + body.compiler_error.slice(0, 500).replace(/```/gi, "`​`​`") + "``` error too large, max limit : 500 characters"
                     }
                 }
                 if (!body) {
-                    fields["Error"] = "```fix\r\nProgram timed out```";
+                    fields["Error"] = "```fix\nProgram timed out```";
                 }
                 if (body && body.status) {
                     fields["ExitCode"] = body.status;
