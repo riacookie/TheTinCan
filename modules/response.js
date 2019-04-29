@@ -99,6 +99,9 @@ exports.create = (config) => {
             "error": config.error
         };
     }
+    if (config.description) {
+        result.embed.embed.description = config.description;
+    }
     if (config.fields) {
         if (config.fields instanceof Array) {
             for (let i = 0; i < config.fields.length; i++) {
@@ -122,10 +125,7 @@ exports.create = (config) => {
                 result.embed.embed.description += text;
             }
         }
-    }
-    else {
-        result.embed.embed.description += config.description;
-    }
+    } 
     if (config.footer)  {
         result.embed.embed.footer = config.footer;
     }
