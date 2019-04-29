@@ -29,7 +29,7 @@ exports.run = (message) => {
                             if (pod.id == "Solution" || pod.id == "DecimalApproximation" || (pod.id == "Result" && pod.scanner != "Rational") && pod.numsubpods > 0) {
                                 config.fields = [pod.subpods[0].plaintext];
                                 config.fileurl = pod.subpods[0].img.src;
-                                config.filename = pod. + '.png';
+                                config.filename = pod.title + '.png';
                                 break;
                             }
                         }
