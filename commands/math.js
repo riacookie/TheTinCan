@@ -56,7 +56,7 @@ exports.run = (message) => {
                                 }
                             }
                         }
-                        if (answer) {
+                        if (config.fields) {
                             if (config.fileurl) {
                                 request(
                                     {
