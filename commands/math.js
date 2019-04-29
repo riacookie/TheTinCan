@@ -20,6 +20,7 @@ exports.run = (message) => {
                             "author": message.author,
                             "title": `Solution for "${m}" : `,
                             "mention": true,
+                            "linebreak": true,
                             "seperator": ":",
                             "error": "Something went wrong, math.js isn't working properly"
                         }
@@ -44,7 +45,7 @@ exports.run = (message) => {
                                 for (let i = 0; i < body.queryresult.pods.length; i++) {
                                     const pod = body.queryresult.pods[i]
                                     if (pod.scanner == 'Data' && pod.numsubpods > 0) {
-                                        if (!(pod.id.includes('ChemicalNamesAndFormulas:') || pod.id.includes('ChemicalProperties:') || pod.id.includes('Thermodynamics:'))) {
+                                        if (!(pod.id.includes('ChemicalNamesAndFormulas:') || pod.id.includes('ChemicalProperties:') || pod.id.includes('Thermodynamics:') || pod.id.includes('ReactionStructures:'))) {
                                             if (!config.fields) config.fields = {};
                                             config.fields[pod.title] = pod.subpods[0].plaintext;
                                         }
