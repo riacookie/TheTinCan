@@ -16,7 +16,7 @@ exports.run = (message) => {
                         return;
                     }
                     if (body.queryresult.pods) {
-                        let config = {
+                        var config = {
                             "author": message.author,
                             "title": `Solution for "${m}" : `,
                             "mention": true,
@@ -29,7 +29,7 @@ exports.run = (message) => {
                             if (pod.id == "Solution" || pod.id == "DecimalApproximation" || (pod.id == "Result" && pod.scanner != "Rational") && pod.numsubpods > 0) {
                                 config.fields = [pod.subpods[0].plaintext];
                                 config.fileurl = pod.subpods[0].img.src;
-                                config.filename = pod.title;
+                                config.filename = pod. + '.png';
                                 break;
                             }
                         }
@@ -51,7 +51,7 @@ exports.run = (message) => {
                                         }
                                         else if (!config.fileurl && pod.id.includes('ReactionStructures:')) {
                                             config.fileurl = pod.subpods[0].img.src;
-                                            config.filename = pod.title;
+                                            config.filename = pod.title + '.png';
                                         }
                                     }
                                 }
@@ -67,9 +67,7 @@ exports.run = (message) => {
                                     },
                                     ((err, res, imageBuffer) => {
                                         debug(err);
-                                        if (imageBuffer) {
-                                            config.file = imageBuffer;
-                                        }
+                                        config.file = imageBuffer;
                                         response.send(message, response.create(config));
                                     })
                                 );
