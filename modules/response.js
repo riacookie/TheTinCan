@@ -98,41 +98,41 @@ exports.create = (config) => {
             "callback": config.callback,
             "error": config.error
         };
-        if (config.fields) {
-            if (config.fields instanceof Array) {
-                for (let i = 0; i < config.fields.length; i++) {
-                    const field = config.fields[i];
-                    let text = `:black_small_square: ${field}`
-                    text.endsWith(".") || text.endsWith("```") ? _ : text += ".";
-                    if (i != 0 && config.linebreak) text = "\r\n" + text;
-                    result.text += text;
-                    result.embed.embed.description += text;
-                }
-            }
-            else {
-                let keys = Object.keys(config.fields);
-                for (let i = 0; i < keys.length; i++) {
-                    const key = keys[i];
-                    const value = config.fields[key] instanceof Array ? config.fields[key].join(", ") : config.fields[key];
-                    let text = `:black_small_square: **${key} ${config.seperator || ":"}** ${value}`;
-                    text.endsWith(".") || text.endsWith("```") ? _ : text += ".";
-                    if (i != 0 && config.linebreak) text = "\r\n" + text;
-                    result.text += text;
-                    result.embed.embed.description += text;
-                }
+    }
+    if (config.fields) {
+        if (config.fields instanceof Array) {
+            for (let i = 0; i < config.fields.length; i++) {
+                const field = config.fields[i];
+                let text = `:black_small_square: ${field}`
+                text.endsWith(".") || text.endsWith("```") ? _ : text += ".";
+                if (i != 0 && config.linebreak) text = "\r\n" + text;
+                result.text += text;
+                result.embed.embed.description += text;
             }
         }
         else {
-            result.embed.embed.description += config.description;
+            let keys = Object.keys(config.fields);
+            for (let i = 0; i < keys.length; i++) {
+                const key = keys[i];
+                const value = config.fields[key] instanceof Array ? config.fields[key].join(", ") : config.fields[key];
+                let text = `:black_small_square: **${key} ${config.seperator || ":"}** ${value}`;
+                text.endsWith(".") || text.endsWith("```") ? _ : text += ".";
+                if (i != 0 && config.linebreak) text = "\r\n" + text;
+                result.text += text;
+                result.embed.embed.description += text;
+            }
         }
-        if (config.footer)  {
-            result.embed.embed.footer = config.footer;
-        }
-        if (config.thumbnail) {
-            result.embed.embed.thumbnail = {
-                "url": config.thumbnail
-            };
-        }
+    }
+    else {
+        result.embed.embed.description += config.description;
+    }
+    if (config.footer)  {
+        result.embed.embed.footer = config.footer;
+    }
+    if (config.thumbnail) {
+        result.embed.embed.thumbnail = {
+            "url": config.thumbnail
+        };
     }
     return result;
 }
