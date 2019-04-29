@@ -16,36 +16,66 @@ exports.run = (message) => {
                         return;
                     }
                     if (body.queryresult.pods) {
-                        let answer;
+                        let config = {
+                            "author": message.author,
+                            "title": `Solution for "${m}" : `,
+                            "mention": true,
+                            "seperator": ":",
+                            "error": "Something went wrong, math.js isn't working properly"
+                        }
                         for (let i = 0; i < body.queryresult.pods.length; i++) {
                             const pod = body.queryresult.pods[i]
                             if (pod.id == "Solution" || pod.id == "DecimalApproximation" || (pod.id == "Result" && pod.scanner != "Rational") && pod.numsubpods > 0) {
-                                answer = pod.subpods[0].plaintext
+                                config.fields = [pod.subpods[0].plaintext];
+                                config.fileurl = pod.subpods[0].img.src;
+                                config.filename = pod.title;
                                 break;
                             }
                         }
-                        if (!answer) {
+                        if (!config.fields) {
                             for (let i = 0; i < body.queryresult.pods.length; i++) {
                                 const pod = body.queryresult.pods[i]
                                 if ((pod.title == "Result" || pod.id == "Solution" || pod.id == "DecimalApproximation" || pod.id == "Result") && pod.numsubpods > 0) {
-                                    answer = pod.subpods[0].plaintext
+                                    config.fields = [pod.subpods[0].plaintext];
                                     break;
+                                }
+                            }
+                            if (!config.fields) {
+                                for (let i = 0; i < body.queryresult.pods.length; i++) {
+                                    const pod = body.queryresult.pods[i]
+                                    if (pod.scanner == 'Data' && pod.numsubpods > 0) {
+                                        if (!(pod.id.inludes('ChemicalNamesAndFormulas:') || pod.id.includes('ChemicalProperties:') || pod.id.includes('Thermodynamics:'))) {
+                                            if (!config.fields) config.fields = {};
+                                            config.fields[pod.title] = pod.subpods[0].plaintext;
+                                        }
+                                        else if (!config.fileurl && pod.id.includes('ReactionStructures:')) {
+                                            config.fileurl = pod.subpods[0].img.src;
+                                            config.filename = pod.title;
+                                        }
+                                    }
                                 }
                             }
                         }
                         if (answer) {
-                            response.send(message, 
-                                response.create({
-                                    "author": message.author,
-                                    "title": `Solution for "${m}" : `,
-                                    "mention": true,
-                                    "fields": [
-                                        answer
-                                    ],
-                                    "seperator": ":",
-                                    "error": "Something went wrong, math.js isn't working properly"
-                                })
-                            );    
+                            if (config.fileurl) {
+                                request(
+                                    {
+                                        "url": imageURL,
+                                        "method": 'GET',
+                                        "encoding": null
+                                    },
+                                    ((err, res, imageBuffer) => {
+                                        debug(err);
+                                        if (imageBuffer) {
+                                            config.file = imageBuffer;
+                                        }
+                                        response.send(message, response.create(config));
+                                    })
+                                );
+                            }
+                            else {
+                                response.send(message, response.create(config));
+                            }   
                         }
                         else {
                             response.error(message, "failed to get solution");
