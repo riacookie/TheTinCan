@@ -61,7 +61,7 @@ exports.run = (message) => {
                             if (config.fileurl) {
                                 request(
                                     {
-                                        "url": imageURL,
+                                        "url": config.fileurl,
                                         "method": 'GET',
                                         "encoding": null
                                     },
