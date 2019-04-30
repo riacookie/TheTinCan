@@ -62,14 +62,14 @@ exports.create = (config) => {
                 },
                 "files": [{
                     "attachment": config.file,
-                    "name": config.filename
+                    "name": config.filename.replace(/ /g, "_")
                 }]
             },
             "text": config.title + " :\r\n" + config.fileurl,
             "file": [config.title, {
                 "files": [{
                     "attachment": config.file,
-                    "name": config.filename
+                    "name": config.filename.replace(/ /g, "_")
                 }]
             }],
             "mention": config.mention,
