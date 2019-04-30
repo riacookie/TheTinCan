@@ -22,7 +22,7 @@ exports.info = info => {
                 console.log(`[${getCaller()}] : ${JSON.stringify(info, null, 4)}`);
             } catch (error) {
                 let text = JSON.stringify(me, ((key, value) => {
-                    if (value typeof Buffer) { 
+                    if (value instanceof Buffer) { 
                       return value.id;
                     } else {
                       return value;
