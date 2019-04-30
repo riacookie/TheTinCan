@@ -97,6 +97,9 @@ exports.run = async(message) => {
                                                 allowed = true;
                                                 end();
                                             }
+                                            else {
+                                                response.error(message, "You don't have permission to delete those messages");
+                                            }
                                         }
                                         else {
                                             response.error(message, "You don't have permission to delete those messages");
