@@ -28,10 +28,14 @@ exports.run = (message) => {
                             const pod = body.queryresult.pods[i]
                             if (pod.id == "Solution" || pod.id == "DecimalApproximation" || (pod.id == "Result" && pod.scanner != "Rational") && pod.numsubpods > 0) {
                                 if (!config.fields) config.fields = {};
-                                config.fields['Solution'] = pod.subpods[0].plaintext;
-                                config.fileurl = pod.subpods[0].img.src;
-                                config.filename = pod.title + '.png';
-                                break;
+                                if (pod.subpods[0].plaintext) {
+                                    config.fields['Solution'] = pod.subpods[0].plaintext;
+                                    if (pod.subpods[0].img.src) {
+                                        config.fileurl = pod.subpods[0].img.src;
+                                        config.filename = pod.title + '.png';
+                                    }
+                                    break;
+                                }
                             }
                         }
                         if (!config.fields) {
@@ -39,8 +43,10 @@ exports.run = (message) => {
                                 const pod = body.queryresult.pods[i]
                                 if ((pod.title == "Result" || pod.id == "Solution" || pod.id == "DecimalApproximation" || pod.id == "Result") && pod.numsubpods > 0) {
                                     if (!config.fields) config.fields = {};
-                                    config.fields['Solution'] = pod.subpods[0].plaintext;
-                                    break;
+                                    if (pod.subpods[0].plaintext) {
+                                        config.fields['Solution'] = pod.subpods[0].plaintext;
+                                        break;
+                                    }
                                 }
                             }
                             if (!config.fields) {
@@ -49,11 +55,15 @@ exports.run = (message) => {
                                     if (pod.scanner == 'Data' && pod.numsubpods > 0) {
                                         if (!(pod.id.includes('ChemicalNamesAndFormulas:') || pod.id.includes('ChemicalProperties:') || pod.id.includes('Thermodynamics:') || pod.id.includes('ReactionStructures:'))) {
                                             if (!config.fields) config.fields = {};
-                                            config.fields[pod.title] = pod.subpods[0].plaintext;
+                                            if (pod.subpods[0].plaintext) {
+                                                config.fields[pod.title] = pod.subpods[0].plaintext;
+                                            }
                                         }
                                         else if (!config.fileurl && pod.id.includes('ReactionStructures:')) {
-                                            config.fileurl = pod.subpods[0].img.src;
-                                            config.filename = pod.title + '.png';
+                                            if (pod.subpods[0].img.src) {
+                                                config.fileurl = pod.subpods[0].img.src;
+                                                config.filename = pod.title + '.png';
+                                            }
                                         }
                                     }
                                 }
