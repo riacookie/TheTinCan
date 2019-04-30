@@ -23,7 +23,7 @@ exports.info = info => {
             } catch (error) {
                 let infof = info;
                 ['author', 'file', 'callback'].forEach(k => {
-                    infof[k] = undefined;
+                    infof[k] = typeof(infof[k]);
                 })
                 console.log(`[${getCaller()}] : ${JSON.stringify(infof)}`);
             }
