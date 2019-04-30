@@ -3,7 +3,7 @@ Unfinished discord.js bot.
 #### Note : This source isn't meant to be copied or reused, it's opensource for viewers/users to understand how it works.
 ## Future Updates Info :
 - Pending Commands : blacklist, ban, mute, kick, tempmute, tempban, reboot, uptime, info.
-- Pending Features : respond on mention, include result image in math.js's output.
+- Pending Features : respond on mention.
 - Problems : Identity change isn't functional yet.
 
 ## Invites :
