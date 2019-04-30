@@ -134,6 +134,7 @@ exports.create = (config) => {
             "url": config.thumbnail
         };
     }
+    debug(result);
     return result;
 }
 
