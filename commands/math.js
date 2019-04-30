@@ -81,7 +81,6 @@ exports.run = (message) => {
                                         debug(err);
                                         config.file = imageBuffer;
                                         response.send(message, response.create(config));
-                                        debug(config);
                                     })
                                 );
                             }
