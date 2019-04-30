@@ -31,7 +31,6 @@ exports.run = (message) => {
                                     config.fields = [pod.subpods[0].plaintext];
                                     if (pod.subpods[0].img.src) {
                                         config.fileurl = pod.subpods[0].img.src;
-                                        config.filename = pod.title + '.png';
                                     }
                                     break;
                                 }
@@ -60,7 +59,6 @@ exports.run = (message) => {
                                         else if (!config.fileurl && pod.id.includes('ReactionStructures:')) {
                                             if (pod.subpods[0].img.src) {
                                                 config.fileurl = pod.subpods[0].img.src;
-                                                config.filename = pod.title + '.png';
                                             }
                                         }
                                     }
@@ -78,6 +76,7 @@ exports.run = (message) => {
                                     ((err, res, imageBuffer) => {
                                         debug(err);
                                         config.file = imageBuffer;
+                                        config.filename = "unknown.png";
                                         response.send(message, response.create(config));
                                     })
                                 );
