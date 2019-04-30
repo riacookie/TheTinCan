@@ -80,12 +80,12 @@ exports.run = (message) => {
                                     ((err, res, imageBuffer) => {
                                         debug(err);
                                         config.file = imageBuffer;
+                                        debug(JSON.stringify(config, null, 4));
                                         response.send(message, response.create(config));
                                     })
                                 );
                             }
                             else {
-                                console.log(JSON.stringify(config, null, 4));
                                 response.send(message, response.create(config));
                             }   
                         }
