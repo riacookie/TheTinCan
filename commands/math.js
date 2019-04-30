@@ -80,8 +80,8 @@ exports.run = (message) => {
                                     ((err, res, imageBuffer) => {
                                         debug(err);
                                         config.file = imageBuffer;
-                                        debug(config);
                                         response.send(message, response.create(config));
+                                        debug(config);
                                     })
                                 );
                             }
