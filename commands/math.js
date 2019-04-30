@@ -42,6 +42,9 @@ exports.run = (message) => {
                                 if ((pod.title == "Result" || pod.id == "Solution" || pod.id == "DecimalApproximation" || pod.id == "Result") && pod.numsubpods > 0) {
                                     if (pod.subpods[0].plaintext) {
                                         config.fields = [pod.subpods[0].plaintext];
+                                        if (pod.subpods[0].img.src) {
+                                            config.fileurl = pod.subpods[0].img.src;
+                                        }
                                         break;
                                     }
                                 }
