@@ -25,7 +25,7 @@ exports.info = info => {
                 ['author', 'file', 'callback'].forEach(k => {
                     infof[k] = typeof(infof[k]);
                 })
-                console.log(`[${getCaller()}] : ${JSON.stringify(infof)}`);
+                console.log(`[${getCaller()}] : ${JSON.stringify(infof, null, 4)}`);
             }
         }
         else {
