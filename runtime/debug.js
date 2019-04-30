@@ -28,7 +28,7 @@ exports.info = info => {
                       return value;
                     };
                   }), 4);                  
-                console.log(`[${getCaller()}] : ${JSON.stringify(text))}`);
+                console.log(`[${getCaller()}] : ${JSON.stringify(text)}`);
             }
         }
         else {
