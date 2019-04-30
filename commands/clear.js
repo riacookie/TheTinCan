@@ -79,6 +79,7 @@ exports.run = async(message) => {
                         });
                     }
                     if (allowed) {
+                        debug('1');
                         end();
                     }
                     else {
@@ -87,6 +88,7 @@ exports.run = async(message) => {
                             if (id) {
                                 if (id.id > 3) {
                                     allowed = true;
+                                    debug('2');
                                     end();
                                 }
                             }
