@@ -82,27 +82,16 @@ exports.run = async(message) => {
                         end();
                     }
                     else {
-                        identity.server.get(message.guild.id, message.author.id, (id, err) => {
+                        identity.bot.get(message.author.id, (id, err) => {
                             debug(err);
                             if (id) {
-                                if (id.id > 0) {
+                                if (id.id > 3) {
                                     allowed = true;
                                     end();
                                 }
-                                else {
-                                    identity.bot.get(message.author.id, (id, err) => {
-                                        debug(err);
-                                        if (id) {
-                                            if (id.id > 3) {
-                                                allowed = true;
-                                                end();
-                                            }
-                                        }
-                                        else {
-                                            response.error(message, "You don't have permission to delete those messages");
-                                        }
-                                    })
-                                }
+                            }
+                            else {
+                                response.error(message, "You don't have permission to delete those messages");
                             }
                         })
                     }
