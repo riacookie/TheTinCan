@@ -21,11 +21,11 @@ exports.info = info => {
             try {
                 console.log(`[${getCaller()}] : ${JSON.stringify(info, null, 4)}`);
             } catch (error) {
-                let infof = info;
                 ['author', 'file', 'callback'].forEach(k => {
-                    infof[k] = typeof(infof[k]);
+                    if (info[k]) info[k] = typeof(info[k]);
+                    
                 })
-                console.log(`[${getCaller()}] : ${JSON.stringify(infof, null, 4)}`);
+                console.log(`[${getCaller()}] : ${JSON.stringify(info, null, 4)}`);
             }
         }
         else {
