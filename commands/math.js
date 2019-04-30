@@ -85,6 +85,7 @@ exports.run = (message) => {
                                 );
                             }
                             else {
+                                debug(JSON.stringify(config, null, 4));
                                 response.send(message, response.create(config));
                             }   
                         }
