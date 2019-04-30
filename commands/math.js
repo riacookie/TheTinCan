@@ -51,7 +51,7 @@ exports.run = (message) => {
                                 for (let i = 0; i < body.queryresult.pods.length; i++) {
                                     const pod = body.queryresult.pods[i]
                                     if (pod.scanner == 'Data' && pod.numsubpods > 0) {
-                                        if (!(pod.id.includes('ChemicalNamesAndFormulas:') || pod.id.includes('ChemicalProperties:') || pod.id.includes('Thermodynamics:') || pod.id.includes('ReactionStructures:'))) {
+                                        if (!(pod.id.includes('ChemicalNamesAndFormulas:') || pod.id.includes('ChemicalProperties:') || pod.id.includes('Thermodynamics:') || pod.id.includes('ReactionStructures:') || pod.id.includes('Constant:'))) {
                                             if (!config.fields) config.fields = {};
                                             if (pod.subpods[0].plaintext) {
                                                 config.fields[pod.title] = pod.subpods[0].plaintext;
