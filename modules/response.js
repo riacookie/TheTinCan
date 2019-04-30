@@ -103,6 +103,7 @@ exports.create = (config) => {
         result.embed.embed.description = config.description;
     }
     if (config.fields) {
+        result.embed.embed.description = "";
         if (config.fields instanceof Array) {
             for (let i = 0; i < config.fields.length; i++) {
                 const field = config.fields[i];
@@ -134,7 +135,6 @@ exports.create = (config) => {
             "url": config.thumbnail
         };
     }
-    debug(result);
     return result;
 }
 
