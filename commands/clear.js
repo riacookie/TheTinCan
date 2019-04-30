@@ -13,8 +13,8 @@ exports.run = async(message) => {
                         return;
                     }
                     if (result.exitcode < 0) mentioned = false;
-                    if (result.users.length == 1 && users[0] == message.author.id) allowed = true;
-                    if (!allowed && (message.channel.permissionsFor(await message.guild.fetchMember(message.author.id)).has('MANAGE_MESSAGES'))) allowed = true;
+                    if (mentioned && result.users.length == 1 && users[0] == message.author.id) allowed = true;
+                    if ((!allowed) && (message.channel.permissionsFor(await message.guild.fetchMember(message.author.id)).has('MANAGE_MESSAGES'))) allowed = true;
                     if (!message.channel.permissionsFor(message.guild.me).has('MANAGE_MESSAGES')) {
                         if (users.length != 1 || users[0] != client.user.id) {
                             response.error(message, "I don't have permission to delete those messages");
@@ -79,21 +79,30 @@ exports.run = async(message) => {
                         });
                     }
                     if (allowed) {
-                        debug('1');
                         end();
                     }
                     else {
-                        identity.bot.get(message.author.id, (id, err) => {
+                        identity.server.get(message.guild.id, message.author.id, (id, err) => {
                             debug(err);
                             if (id) {
-                                if (id.id > 3) {
+                                if (id.id > 0) {
                                     allowed = true;
-                                    debug('2');
                                     end();
                                 }
-                            }
-                            else {
-                                response.error(message, "You don't have permission to delete those messages");
+                                else {
+                                    identity.bot.get(message.author.id, (id, err) => {
+                                        debug(err);
+                                        if (id) {
+                                            if (id.id > 3) {
+                                                allowed = true;
+                                                end();
+                                            }
+                                        }
+                                        else {
+                                            response.error(message, "You don't have permission to delete those messages");
+                                        }
+                                    })
+                                }
                             }
                         })
                     }
