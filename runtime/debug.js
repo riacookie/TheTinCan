@@ -21,8 +21,11 @@ exports.info = info => {
             try {
                 console.log(`[${getCaller()}] : ${JSON.stringify(info, null, 4)}`);
             } catch (error) {
-                [info.author, info.file, info.callback] = [undefined, undefined, undefined];
-                console.log(`[${getCaller()}] : ${JSON.stringify(info)}`);
+                let infof = info;
+                ['author', 'file', 'callback'].forEach(k => {
+                    infof[k] = undefined;
+                })
+                console.log(`[${getCaller()}] : ${JSON.stringify(infof)}`);
             }
         }
         else {
