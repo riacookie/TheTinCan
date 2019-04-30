@@ -27,9 +27,8 @@ exports.run = (message) => {
                         for (let i = 0; i < body.queryresult.pods.length; i++) {
                             const pod = body.queryresult.pods[i]
                             if (pod.id == "Solution" || pod.id == "DecimalApproximation" || (pod.id == "Result" && pod.scanner != "Rational") && pod.numsubpods > 0) {
-                                if (!config.fields) config.fields = {};
                                 if (pod.subpods[0].plaintext) {
-                                    config.fields['Solution'] = pod.subpods[0].plaintext;
+                                    config.fields = [pod.subpods[0].plaintext];
                                     if (pod.subpods[0].img.src) {
                                         config.fileurl = pod.subpods[0].img.src;
                                         config.filename = pod.title + '.png';
@@ -42,9 +41,8 @@ exports.run = (message) => {
                             for (let i = 0; i < body.queryresult.pods.length; i++) {
                                 const pod = body.queryresult.pods[i]
                                 if ((pod.title == "Result" || pod.id == "Solution" || pod.id == "DecimalApproximation" || pod.id == "Result") && pod.numsubpods > 0) {
-                                    if (!config.fields) config.fields = {};
                                     if (pod.subpods[0].plaintext) {
-                                        config.fields['Solution'] = pod.subpods[0].plaintext;
+                                        config.fields = [pod.subpods[0].plaintext];
                                         break;
                                     }
                                 }
