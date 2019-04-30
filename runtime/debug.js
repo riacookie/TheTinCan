@@ -21,8 +21,8 @@ exports.info = info => {
             try {
                 console.log(`[${getCaller()}] : ${JSON.stringify(info, null, 4)}`);
             } catch (error) {
-                let text = JSON.stringify(me, ((key, value) => {
-                    if (value instanceof Buffer) { 
+                let text = JSON.stringify(info, ((key, value) => {
+                    if (value instanceof Buffer || value instanceof Function) { 
                       return value.id;
                     } else {
                       return value;
