@@ -11,7 +11,7 @@ exports.run = (message) => {
                 },
                 ((error, resource, body) => {
                     debug(error);
-                    if !body || !body.queryresult || body.queryresult.error || !body.queryresult.success) {
+                    if (!body || !body.queryresult || body.queryresult.error || !body.queryresult.success) {
                         response.error(message, "invalid math")
                         return;
                     }
