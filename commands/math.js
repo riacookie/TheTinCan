@@ -12,7 +12,7 @@ exports.run = (message) => {
                 ((error, resource, body) => {
                     debug(error);
                     if (!body) {
-                        response.error(message, "quick maffs failed, can't real wolfram.")
+                        response.error(message, "quick mafs failed, can't real wolfram.")
                         return;
                     }
                     if (body.queryresult.error || !body.queryresult.success) {
