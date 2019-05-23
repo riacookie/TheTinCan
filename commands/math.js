@@ -11,11 +11,7 @@ exports.run = (message) => {
                 },
                 ((error, resource, body) => {
                     debug(error);
-                    if (!body) {
-                        response.error(message, "quick mafs failed, can't real wolfram.")
-                        return;
-                    }
-                    if (body.queryresult.error || !body.queryresult.success) {
+                    if !body || !body.queryresult || body.queryresult.error || !body.queryresult.success) {
                         response.error(message, "invalid math")
                         return;
                     }
