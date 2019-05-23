@@ -9,14 +9,14 @@ exports.run = (message) => {
                 m = message.content.match(new RegExp(`${process.env.prefix}([^\`\`\`]+)`))[1];
                 m = m.replace(m.slice(0, m.indexOf(" ") + 1), "");
                 if (m.endsWith(" ")) {
-                    m = m.slice(0, m.length-1)
+                    m = m.slice(0, m.length - 1)
                 }
                 let n = wandbox.languages.lower.indexOf(m.toLowerCase());
                 if (n != -1) {
                     cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][0];
-					if (cmplr.includes('head') && wandbox.compilers.normal[wandbox.languages.normal[n]][1]) {
-						cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][1];
-					}
+                    if (cmplr.includes('head') && wandbox.compilers.normal[wandbox.languages.normal[n]][1]) {
+                        cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][1];
+                    }
                 }
                 else {
                     n = wandbox.compilers_arr.lower.indexOf(m.toLowerCase());
@@ -40,9 +40,9 @@ exports.run = (message) => {
                 __m = __m.replace(_m, '');
                 if (__m.indexOf(" ") != -1) {
                     let t = _m + __m.slice(0, __m.indexOf(" ") + 1);
-					if (!t.match(/\r\n|\r|\n|\t/)) {
-						_m = t;
-					}
+                    if (!t.match(/\r\n|\r|\n|\t/)) {
+                        _m = t;
+                    }
                 }
                 if (_m.match(/\r\n|\r|\n|\t/)) {
                     _m = _m.split(/\r\n|\r|\n|\t/)[0];
@@ -51,7 +51,7 @@ exports.run = (message) => {
                     _m = _m.slice(1, _m.length);
                 }
                 if (_m.endsWith(" ")) {
-                    _m = _m.slice(0, _m.length-1);
+                    _m = _m.slice(0, _m.length - 1);
                 }
                 if (_m) {
                     let arr = _m.split(" ");
@@ -63,8 +63,11 @@ exports.run = (message) => {
                     }
                     if (n != -1) {
                         cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][0];
-			            if (cmplr.includes('head') && wandbox.compilers.normal[wandbox.languages.normal[n]][1]) {
+                        if (cmplr.includes('head') && wandbox.compilers.normal[wandbox.languages.normal[n]][1]) {
                             cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][1];
+                        }
+                        if (cmplr.includes('head') && wandbox.compilers.normal[wandbox.languages.normal[n]][1]) {
+                            cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][2];
                         }
                     }
                     else {
@@ -79,11 +82,11 @@ exports.run = (message) => {
                         }
                     }
                     let c = message.content.slice(0, message.content.match(/\r\n|\r|\n|\t| /).index);
-                    if (c.startsWith(' ')) { 
+                    if (c.startsWith(' ')) {
                         c = c.slice(1, c.length);
                     }
                     if (c.endsWith(' ')) {
-                        c = c.slice(0, c.length-1);
+                        c = c.slice(0, c.length - 1);
                     }
                     code = message.content.replace(new RegExp(`${m}|${c}`, 'g'), "");
                     while (code.startsWith(" ") || code.startsWith("\r") || code.startsWith("\t") || code.startsWith("\n")) {
@@ -140,14 +143,14 @@ exports.run = (message) => {
                         "title": "Compiler result : ",
                         "linebreak": true,
                         "seperator": ":",
-                        "error": "Something went wrong, compiler.js isn't working properly"                    
+                        "error": "Something went wrong, compiler.js isn't working properly"
                     })
                 );
             });
         }
         else {
             response.error(message, "no arguments provided");
-        }    
+        }
     } catch (error) {
         debug(error);
     }
