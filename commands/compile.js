@@ -66,7 +66,7 @@ exports.run = (message) => {
                         if (cmplr.includes('head') && wandbox.compilers.normal[wandbox.languages.normal[n]][1]) {
                             cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][1];
                         }
-                        if (cmplr.includes('head') && wandbox.compilers.normal[wandbox.languages.normal[n]][1]) {
+                        if (cmplr.includes('head') && wandbox.compilers.normal[wandbox.languages.normal[n]][2]) {
                             cmplr = wandbox.compilers.normal[wandbox.languages.normal[n]][2];
                         }
                     }
