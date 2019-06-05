@@ -103,9 +103,8 @@ module.exports.create = options => {
         let keys = Object.keys(options.fields);
         for (let i = 0; i < keys.length; i++) {
             var key = keys[i];
-            if (options.fields instanceof Array) key = key + 1;
             var value = options.fields[key];
-            debug(value);
+            if (options.fields instanceof Array) key = key + 1;
             if (value instanceof Array) value = value.join(', ');
             value = value.toString();
             if (!(value.endsWith('.') || value.endsWith('`'))) value = value + '.';
