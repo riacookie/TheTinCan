@@ -39,7 +39,6 @@ module.exports = async message => {
                     else {
                         answer = [answer];
                     }
-                    debug(answer);
                     return await response.send(response.create({
                         message: message,
                         author: message.author,
