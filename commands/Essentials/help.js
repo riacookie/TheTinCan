@@ -20,7 +20,7 @@ module.exports = async message => {
             }));
         }
         else {
-            let data = {..bot.commands.list};
+            let data = {...bot.commands.list};
             let keys = Object.keys(data);
             for (let i = 0; i < keys.length; i++) {
                 data[keys[i]] = data[keys[i]].join(', ');
