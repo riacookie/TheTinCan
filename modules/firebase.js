@@ -1,4 +1,3 @@
-/*
 module.exports.get = (path) => new Promise((resolve, reject) => {
     database.ref(path).once("value", data => {
         if (data.exists()) {
@@ -11,14 +10,6 @@ module.exports.get = (path) => new Promise((resolve, reject) => {
     error => {
         reject(error);
     })
-})
-*/
-
-module.exports.get = path => new Promise((resolve, reject) => {
-    let data = require('../database.json');
-    let key = path.replace(/\//g, '.');
-    if (key.startsWith('.')) key = key.replace('.', '');
-    resolve(eval(`data.${key}`))
 })
 
 module.exports.set = (path, data) => new Promise((resolve, reject) => {
