@@ -27,20 +27,6 @@ Client.on('message', async message => {
                 debug(error);
             }
         }
-        else if (cmd == 'eval' && message.author.id == '469466888657829889') {
-            let code = await mentions.getCode(message);
-            if (code) {
-                try {
-                    debug('code : ', code);
-                    eval(code);
-                } catch (error) {
-                    response.error({
-                        error: error.toString(),
-                        message: message
-                    });
-                }
-            }
-        }
         else {
             debug(`invalid command : ${cmd}`);
         }
