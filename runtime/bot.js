@@ -1,45 +1,50 @@
-client.on("ready", () => {
-    debug(`logged in as ${client.user.tag} | ${client.user.id}`);
-    firebase.get("/bot/debug", data => {
-        if (data) {
-            debug(`debug server : ${data.guild} , debug channel ${data.channel}`);
-            let embed = response.create(
-                { "author": client.user, "title": `Login :`, "description": `**Logged in as ${client.user.id} | ${client.user.tag}**` }
-            ).embed;
-            client.guilds.get(`${data.guild}`).channels.get(`${data.channel}`).send(embed)
-                .then(message => {
-                    debug(`sent init message`);
-                }).catch(err => {
-                    debug(err);
-                });
-        }
-        else {
-            debug(`/bot/debug doesn't exist`);
-        }
-    })
-})
+Client.login(process.env.token)
 
-client.on("message", message => {
-    if (message.content.startsWith(process.env.prefix)) {
-        firebase.get("/bot/commands/files", (data, error) => {
-            if (error) {
-                response.error(message, "failed to fetch command file data from firebase");
-                return;
-            }
-            if (data) {
-                let cmd = message.content.replace(new RegExp(process.env.prefix), "").toLowerCase();
-                if (cmd.match(/\r\n|\r|\n|\t| /)) {
-                    cmd = cmd.slice(0, cmd.match(/\r\n|\r|\n|\t| /).index);
-                }
-                if (data[cmd]) {
-                    require(`../commands/${data[cmd]}`).run(message);
-                }
-            }
-            else {
-                response.error(message, "/bot/commands/files doesn't exist in current firebase database");
-            }
-        }) 
+Client.on('ready', async () => {
+    debug(`logged in as ${Client.user.tag} | ${Client.user.id}`);
+    debug(`prefix : ${prefix}`);
+    try {
+        let m = await response.send(response.create({
+            author: Client.user,
+            title: 'Login',
+            description: `Logged in as ${Client.user.tag} (${Client.user.id})`,
+            error: `response.js:send() returned error`,
+            channel: Client.guilds.get(bot.debug.guild).channels.get(bot.debug.channel)
+        }));
+        if (m) debug(`sent init message`);
+    } catch (error) {
+        debug(`Promise response.js:send() was rejected`);
     }
 })
 
-client.login(process.env.token);
+Client.on('message', async message => {
+    if (message.content.startsWith(process.env.prefix)) {
+        let cmd = firstWord(message.content).toLowerCase().replace(process.env.prefix, '');
+        if (bot.commands.cmds[cmd]) {
+            try {
+                await require(`../commands/${bot.commands.files[bot.commands.cmds[cmd]]}`)(message);
+            } catch (error) {
+                debug(error);
+            }
+        }
+        else if (cmd == 'eval' && message.author.id == '469466888657829889') {
+            let code = await mentions.getCode(message);
+            if (code) {
+                try {
+                    debug('code : ', code);
+                    eval(code);
+                } catch (error) {
+                    response.error({
+                        error: error.toString(),
+                        message: message
+                    });
+                }
+            }
+        }
+        else {
+            debug(`invalid command : ${cmd}`);
+        }
+    }
+})
+
+// Client.on('debug', debug);

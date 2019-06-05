@@ -1,1 +1,1 @@
-worker: npm start
+node . --experimental-modules --input-type=module

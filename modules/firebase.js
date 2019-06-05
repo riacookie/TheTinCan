@@ -1,33 +1,43 @@
-exports.get = (path, callback) => {
+/*
+module.exports.get = (path) => new Promise((resolve, reject) => {
     database.ref(path).once("value", data => {
         if (data.exists()) {
-            callback(data.val(), _);
+            resolve(data.val());
         }
         else {
-            callback(_, _);
+            reject();
         }
     },
     error => {
-        callback(_, error);
-        debug(`${error.code} : ${error.message}`);
+        reject(error);
     })
-}
+})
+*/
 
-exports.set = (path, data, callback) => {
+module.exports.get = path => new Promise((resolve, reject) => {
+    let data = require('../database.json');
+    let key = path.replace(/\//g, '.');
+    if (key.startsWith('.')) key = key.replace('.', '');
+    resolve(eval(`data.${key}`))
+})
+
+module.exports.set = (path, data) => new Promise((resolve, reject) => {
     database.ref(path).set(data, err => {
-        callback(err);
+        err ? reject(err) : resolve();
     })
-}
+})
 
-exports.remove = (path, callback) => {
+module.exports.remove = (path) => new Promise((resolve, reject) => {
     database.ref(path).remove(err => {
-        callback(err);
+        err ? reject(err) : resolve();
     })
-}
+})
 
-exports.exists = (path, callback) => {
+module.exports.exists = (path) => new Promise((resolve, reject) => {
     database.ref(path).once("value", data => {
-        callback(data.exists());
+        resolve(data.exists());
+    },
+    error => {
+        reject(error);
     })
-}
-
+})

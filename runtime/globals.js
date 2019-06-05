@@ -1,100 +1,114 @@
-exports.boot = async() => {
-    global["_"] = undefined;
+module.exports.init = async () => {
     let packages = {
-        'Discord': 'discord.js',
-        'firebase_admin': 'firebase-admin',
-        'request': 'request',
-        'moment': 'moment',
-        'os': 'os'
+        request: 'request',
+        firebase_admin: 'firebase-admin',
+        Discord: 'discord.js',
+        moment: 'moment',
+        os: 'os'
     }
-    Object.keys(packages).forEach(key => {
-        global[key] = require(packages[key]);
-    })
-    debug("initialized npm modules");
+    let package_keys = Object.keys(packages);
+
+    for (let i = 0; i < package_keys.length; i++) {
+        const key = package_keys[i];
+        const name = packages[key];
+        global[key] = require(name);
+    }
+    debug(`initilized npm packages.`);
+    
+    global['_'] = undefined;
+    global['prefix'] = process.env.prefix;
+    global['randomInt'] = (x, y) => Math.floor(x + Math.random() * (y + 1 - x));
+    global['randomElement'] = obj => {
+        let keys = Object.keys(obj);
+        return obj[keys[randomInt(0, keys.length - 1)]];
+    }
+    global['base64'] = {
+        encode: t => Buffer.from(t).toString('base64'),
+        decode: t => Buffer.from(t, 'base64').toString()
+    }
+    global['urlEncode'] = t => {
+        let r = '';
+        let arr = t.split('');
+        for (let i = 0; i < arr.length; i++) {
+            r += `%${Buffer.from(arr[i]).toString('hex')}`;
+        }
+        return r;
+    }
+    global['firstWord'] = t => {
+        if (t.match(/\r\n|\r|\n|\t| /)) {
+            return t.slice(0, t.match(/\r\n|\r|\n|\t| /).index);
+        }
+        else {
+            return t;
+        }
+    }
+    global['shiftWord'] = t => {
+        let r = t.replace(firstWord(t), '');
+        return r.slice(1, r.length);
+    };
+    global['Client'] = new Discord.Client();
+
+    debug(`initilized side functions`);
 
     firebase_admin.initializeApp({
         credential: firebase_admin.credential.cert(JSON.parse(process.env.firebase_key)),
         databaseURL: process.env.firebase_url
     });
-    global["database"] = firebase_admin.database();
-    global["firebase"] = require("../modules/firebase");
-    debug("initialized firebase");
+    global['database'] = firebase_admin.database();
+    global['firebase'] = require('../modules/firebase');
+    global['mentions'] = require('../modules/mentions');
+    global['requestAsync'] = require('../modules/requestAsync');
+    global['response'] = require('../modules/response');
 
-    global["toHex"] = (text, s = "%") => Buffer.from(text, 'utf8').toString('hex').split('').reverse().join('').replace(/(.{2})/g,`$1${s}`).split('').reverse().join('')
-    global["client"] = new Discord.Client();
-    global["random"] = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-    let requestAsyncGet = async(url, timeout = 5000) => {
-        let sleep = (t) => new Promise(r => setTimeout(r, t));
-        let waitFor = async(callback, delay = 50) => {
-            while(!callback()) {
-                await sleep(delay);
-            }
-            return;
-        }
-        debug(`requestAsync.get("${url}")`)
-        let f = false;
-        let results;
-        request.get({ url: url, json: true, headers: {'User-Agent': 'request'}}, (err, res, body) => {
-            results = [err, res, body];
-            f = true;
-        });
-        await waitFor(() => {
-            if (f || timeout <= 0) {
-                return true;
-            }
-            timeout -= 50;
-            return false;
-        }, 50);
-        return results;
-    }
-    let r = await requestAsyncGet('https://wandbox.org/api/list.json');
-    let err, res, body; err = r[0]; res = r[1]; body = r[2];
-    debug(`fetched https://wandbox.org/api/list.json with status ${res.statusCode} | error : ${err}`)
-    let j = {};
-    let l = {};
-    let m = [];
-    let n = [];
-    body.forEach(obj => {
-        m.push(obj.name);
-        n.push(obj.name.toLowerCase());
-        if (j[obj.language]) {
-            j[obj.language].push(obj.name);
-            l[obj.language.toLowerCase()].push(obj.name.toLowerCase());
-        }
-        else {
-            j[obj.language] = [obj.name];
-            l[obj.language.toLowerCase()] = [obj.name.toLowerCase()];
-        }
-    });
-    global["wandbox"] = {
-        "compilers" : {
-            "normal": j,
-            "lower": l
+    debug(`initilized custom modules`);
+
+    global['bot'] = await firebase.get('/bot');
+
+    let [r, b] = await requestAsync.get({
+        url: 'https://wandbox.org/api/list.json',
+        json: true,
+        headers: {'User-Agent': 'request'}
+    }).catch(console.error);
+
+    global['wandbox'] = {
+        compilers: {
+            normal: {},
+            lower: {}
         },
-        "languages" : {
-            "normal": Object.keys(j),
-            "lower": Object.keys(l),
+        languages: {
+            normal: [],
+            lower: []
         },
-        "compilers_arr": {
-            "normal": m,
-            "lower": n
+        compilers_arr: {
+            normal: [],
+            lower: []
         },
-        "compile": (options, timeout, callback) => {
-            request.post("https://wandbox.org/api/compile.json", {
-                "body": options,
-                "timeout": timeout,
-                "json": true
-            },
-            (error, res, body) => {
-                callback(error, res, body);
-            });
+        compile: async (options, timeout) => {
+            let result = await requestAsync.post({
+                url: 'https://wandbox.org/api/compile.json',
+                body: options,
+                json: true,
+                timeout: timeout
+            }).catch(debug);
+            return result;
         }
     }
-    debug(`initialized wandbox variables`);
+    
+    for (let i = 0; i < b.length; i++) {
+        const compiler = b[i];
+        wandbox.compilers_arr.normal.push(compiler.name);
+        wandbox.compilers_arr.lower.push(compiler.name.toLowerCase());
+        if (!wandbox.compilers.normal[compiler.language]) {
+            wandbox.compilers.normal[compiler.language] = [];
+            wandbox.compilers.lower[compiler.language.toLowerCase()] = [];
+            wandbox.languages.normal.push(compiler.language);
+            wandbox.languages.lower.push(compiler.language.toLowerCase());
+        }
+        wandbox.compilers.normal[compiler.language].push(compiler.name);
+        wandbox.compilers.lower[compiler.language.toLowerCase()].push(compiler.name.toLowerCase());
+    }
+    [r, b] = [_, _];
 
-    global["response"] = require("../modules/response");
-    global["identity"] = require("../modules/identity");
-    global["resolve"] = require("../modules/resolve");
-    debug(`initilized response, identity modules`);
-
+    debug(`initilized wandbox`);
 }
+

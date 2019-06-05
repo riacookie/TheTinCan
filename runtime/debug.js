@@ -1,4 +1,5 @@
-global["getCaller"] = () => {
+    
+exports.getCaller = () => {
     let c, e, o, f, r;
     [_, e, o] = [undefined, new Error(), Error.prepareStackTrace];
     Error.prepareStackTrace = (_, s) => s;
@@ -11,25 +12,33 @@ global["getCaller"] = () => {
     Error.prepareStackTrace = o;
     return r;
 }
-
-exports.info = info => {
-    if (info) {
-        if (info instanceof Error) {
-            console.error(info);
-        }
-        else if (info instanceof Object) {
-            try {
-                console.log(`[${getCaller()}] : ${JSON.stringify(info, null, 4)}`);
-            } catch (error) {
-                ['author', 'file', 'callback', 'edit'].forEach(k => {
-                    if (info[k]) info[k] = typeof(info[k]);
-                    
-                })
-                console.log(`[${getCaller()}] : ${JSON.stringify(info, null, 4)}`);
+/*
+exports.objToStr = (obj) => {
+    let list = []
+    return JSON.stringify(obj, (key, value) => {
+        if (value && typeof(value) == "object") {
+            if (list.indexOf(value) != -1) {
+                return "[Circular]";
             }
+            list.push(value);
+        }
+        return value;
+    });
+}
+*/
+exports.debug = (...messages) => {
+    process.stdout.write(`[${this.getCaller()}] : `);
+    for (let i = 0; i < messages.length; i++) {
+        const message = messages[i];
+        if (message instanceof Error) {
+            console.error(message);
+        }
+        else if (!message || message instanceof Object) {
+            console.log(message);
         }
         else {
-            console.log(`[${getCaller()}] : ${info}`);
-        }    
+            process.stdout.write(message);
+        }
     }
+    process.stdout.write('\n');
 }
