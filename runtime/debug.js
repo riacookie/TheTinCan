@@ -12,20 +12,7 @@ exports.getCaller = () => {
     Error.prepareStackTrace = o;
     return r;
 }
-/*
-exports.objToStr = (obj) => {
-    let list = []
-    return JSON.stringify(obj, (key, value) => {
-        if (value && typeof(value) == "object") {
-            if (list.indexOf(value) != -1) {
-                return "[Circular]";
-            }
-            list.push(value);
-        }
-        return value;
-    });
-}
-*/
+
 exports.debug = (...messages) => {
     process.stdout.write(`[${this.getCaller()}] : `);
     for (let i = 0; i < messages.length; i++) {
