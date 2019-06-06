@@ -41,13 +41,13 @@ module.exports = async message => {
                 }
                 else {
                     if (body.program_output) {
-                        fields.Output = codeBlock(body.program_output, '', {lines: 20, char: 1000}, 'output');
+                        fields.Output = codeBlock(body.program_output, '', {lines: 15, char: 1000}, 'output');
                     }
                     if (body.program_error) {
-                        fields.Error = codeBlock(body.program_error, 'fix', {lines: 20, char: 1000}, 'output');
+                        fields.Error = codeBlock(body.program_error, 'fix', {lines: 15, char: 1000}, 'output');
                     }
                     if (body.compiler_error) {
-                        fields['Compiler error'] = codeBlock(body.compiler_error, 'fix', {lines: 20, char: 1000}, 'output');
+                        fields['Compiler error'] = codeBlock(body.compiler_error, 'fix', {lines: 15, char: 1000}, 'output');
                     }
                     if (body.status) {
                         fields['Exit code'] = body.status;
