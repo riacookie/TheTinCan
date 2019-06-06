@@ -27,7 +27,7 @@ module.exports = async message => {
                     text = text.replace(/```/gi, "`​`​`");
                     if (limit && (text.split(/\r\n|\r|\n/g) > limit.lines || text.length > limit.char)) {
                         let t = text.slice(0, limit.char);
-                        while (t.split(/\r\n|\r|\n/g) > limit.lines) {
+                        while (t.split(/\r\n|\r|\n/g).length > limit.lines) {
                             t = t.slice(0, t.lastIndexOf('\n'));
                         }
                         return `\`\`\`${lang}\n${t}\`\`\`${name || 'result'} too large.\nmax line limit : ${limit.lines}.\nmax character limit : ${limit.char}.`
@@ -41,13 +41,13 @@ module.exports = async message => {
                 }
                 else {
                     if (body.program_output) {
-                        fields.Output = codeBlock(body.program_output, '', {lines: 10, char: 1000}, 'output');
+                        fields.Output = codeBlock(body.program_output, '', {lines: 20, char: 1000}, 'output');
                     }
                     if (body.program_error) {
-                        fields.Error = codeBlock(body.program_error, 'fix', {lines: 10, char: 1000}, 'output');
+                        fields.Error = codeBlock(body.program_error, 'fix', {lines: 20, char: 1000}, 'output');
                     }
                     if (body.compiler_error) {
-                        fields['Compiler error'] = codeBlock(body.compiler_error, 'fix', {lines: 10, char: 1000}, 'output');
+                        fields['Compiler error'] = codeBlock(body.compiler_error, 'fix', {lines: 20, char: 1000}, 'output');
                     }
                     if (body.status) {
                         fields['Exit code'] = body.status;
