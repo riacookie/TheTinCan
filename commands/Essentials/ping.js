@@ -3,11 +3,10 @@ module.exports = async message => {
         let msg, flag;
         let cmd = shiftWord(message.content);
         cmd = firstWord(cmd).toLowerCase();
-        let files = await firebase.get('/bot/commands/files');
-        if (files[cmd] && files[cmd] != 'ping') {
+        if (bot.commands.cmds[cmd] && bot.commands.cmds[cmd] != 'ping') {
             message.content = shiftWord(message.content);
             try {
-                msg = await require(`../${files[cmd]}`)(message);
+                msg = await require(`../${bot.commands.files[bot.commands.cmds[cmd]]}`)(message);
                 flag = true;
             } catch (error) {
                 debug(error);
