@@ -15,7 +15,7 @@ module.exports = async message => {
                 fields: {
                     Result: randomInt(numbers[0], numbers[1])
                 },
-                error: 'Coin fell out of hand'
+                error: 'Failed to get random number'
             }));
         }
     } catch(error) {
