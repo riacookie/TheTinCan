@@ -25,7 +25,7 @@ module.exports = async message => {
                 let fields = {};
                 let codeBlock = (text, lang, limit, name) => {
                     text = text.replace(/```/gi, "`​`​`");
-                    if (limit && (text.split(/\r\n|\r|\n/g) > limit.lines || text.length > limit.char)) {
+                    if (limit && (text.split(/\r\n|\r|\n/g).length > limit.lines || text.length > limit.char)) {
                         let t = text.slice(0, limit.char);
                         while (t.split(/\r\n|\r|\n/g).length > limit.lines) {
                             t = t.slice(0, t.lastIndexOf('\n'));
