@@ -107,7 +107,7 @@ module.exports.create = options => {
             if (options.fields instanceof Array) key = (i + 1).toString();
             if (value instanceof Array) value = value.join(', ');
             value = value.toString();
-            if (!['`', '.', '!', '?'].includes(value.slice(value.length - 1)) value = value + '.';
+            if (!(['`', '.', '!', '?'].includes(value.slice(value.length - 1)))) value = value + '.';
             let text = `:black_small_square: **${key} ${options.seperator || ':'}** ${value}`;
             if (options.nokey) text = `:black_small_square: ${value}`;
             if (i != 0 && !options.singleline) text = '\n' + text;
