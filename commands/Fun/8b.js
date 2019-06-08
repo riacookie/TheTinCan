@@ -3,7 +3,7 @@ module.exports = async message => {
         return await response.send(response.create({
             message: message,
             author: message.author,
-            title: shiftWord(message.content),
+            title: 'Some random answer',
             fields: {
                 Answer: randomElement(bot.answers)
             },
