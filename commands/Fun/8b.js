@@ -3,9 +3,9 @@ module.exports = async message => {
         return await response.send(response.create({
             message: message,
             author: message.author,
-            title: 'Your answer is',
+            title: shiftWord(message.content),
             fields: {
-                Result: randomElement(bot.answers)
+                Answer: randomElement(bot.answers)
             },
             error: 'Your question destroyed the universe, wait till we rebuild it.'
         }));
