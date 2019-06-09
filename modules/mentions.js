@@ -462,14 +462,32 @@ module.exports.getCompiler = async message => {
 }
 
 module.exports.getCode = async (message, o) => {
-    debug(o);
+    //debug(o);
     let code;
     if (o) {
+        /*
         debug(code);
         o = o.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         code = message.content.slice(message.content.toLowerCase().search(
             new RegExp(` ${o} | ${o}\n| ${o}\r| ${o}\t`)
         ) + o.length + 2);
+        debug(code);
+        */
+        o = o.toLowerCase();
+        code = message.content;
+        let arr = message.content.replace(/\r|\n|\t/, ' ').split(' ');
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].toLowerCase() == o) {
+                code = code.replace(arr[i], '');
+            }
+            if (arr[i].startsWith('```')) {
+                code = code.replace(arr[i], '');
+                break;
+            }
+        }
+        if (code.lastIndexOf('```') != -1) {
+            code = code.slice(0, code.lastIndexOf('```'));
+        }
         debug(code);
     }
     else {
