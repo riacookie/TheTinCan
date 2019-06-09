@@ -462,6 +462,7 @@ module.exports.getCompiler = async message => {
 }
 
 module.exports.getCode = async (message, o) => {
+    debug(o);
     let code;
     if (o) {
         o = o.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -472,6 +473,7 @@ module.exports.getCode = async (message, o) => {
     else {
         code = shiftWord(message.content);
     }
+    debug(code);
     let clean = () => {
         while ([' ', '\r', '\n', '\t'].includes(code.slice(0, 1))) {
             code = code.slice(1);
