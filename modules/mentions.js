@@ -473,7 +473,7 @@ module.exports.getCode = async (message, o) => {
         code = shiftWord(message.content);
     }
     let clean = () => {
-        while (code.slice(0, 1) == ' ' || code.slice(0, 1) == '\r' || code.slice(0, 1) == '\n' || code.slice(0, 1) == '\t') {
+        while ([' ', '\r', '\n', '\t'].includes(code.slice(0, 1))) {
             code = code.slice(1);
         }
     }
