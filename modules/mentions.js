@@ -462,7 +462,6 @@ module.exports.getCompiler = async message => {
 }
 
 module.exports.getCode = async (message, o) => {
-    //debug(o);
     let code;
     if (o) {
         o = o.toLowerCase();
