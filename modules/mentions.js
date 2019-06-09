@@ -465,15 +465,16 @@ module.exports.getCode = async (message, o) => {
     debug(o);
     let code;
     if (o) {
+        debug(code);
         o = o.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         code = message.content.slice(message.content.toLowerCase().search(
             new RegExp(` ${o} | ${o}\n| ${o}\r| ${o}\t`)
         ) + o.length + 2);
+        debug(code);
     }
     else {
         code = shiftWord(message.content);
     }
-    debug(code);
     let clean = () => {
         while ([' ', '\r', '\n', '\t'].includes(code.slice(0, 1))) {
             code = code.slice(1);
