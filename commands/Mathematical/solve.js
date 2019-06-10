@@ -55,7 +55,7 @@ module.exports = async message => {
             if (Object.keys(config.fields).length < 1) {
                 return await response.error({
                     message: message,
-                    error: 'Can\'t find any solition in received result'
+                    error: 'Can\'t find any solution in received result'
                 });
             }
             if (config.image) {
