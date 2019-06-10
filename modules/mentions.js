@@ -451,9 +451,9 @@ module.exports.getCompiler = async message => {
     let compiler;
     if (lang) {
         let i = 0;
-        while (compiler.includes('head')); {
+        do {
             compiler = wandbox.compilers.normal[lang][i++];
-        }
+        } while (compiler.includes('head'));
         return [compiler, lang];
     }
     else {
