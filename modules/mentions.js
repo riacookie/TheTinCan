@@ -430,12 +430,17 @@ module.exports.getNumber = message => new Promise((resolve, reject) => {
     }
 })
 
+module.exports.hasWord = async (str, word) => {
+    if (str.endsWith(word)) return true;
+    str = str.replace(/\r|\n|\t/g, ' ');
+    if (str.includes(` ${str} `)) return true;
+    return false;
+}
+
 module.exports.getLanguage = async message => {
     for (let i = 0; i < wandbox.languages.lower.length; i++) {
-        const language = wandbox.languages.lower[i].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');;;
-        if (message.content.toLowerCase().endsWith(' ' + language) || message.content.toLowerCase().search(
-                new RegExp(` ${language} | ${language}\r| ${language}\n| ${language}\t`)
-            ) != -1 || message.content.toLowerCase().endsWith(` ${language}`)) {
+        const language = wandbox.languages.lower[i];
+        if (this.hasWord(message.content.toLowerCase(), language)) {
             return wandbox.languages.normal[i];
         }
     }
@@ -453,9 +458,9 @@ module.exports.getCompiler = async message => {
     }
     else {
         for (let i = 0; i < wandbox.compilers_arr.lower.length; i++) {
-            const cmplr = wandbox.compilers_arr.lower[i].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            if (message.content.toLowerCase().endsWith(' ' + cmplr) || message.content.toLowerCase().search(new RegExp(` ${cmplr} | ${cmplr}\n| ${cmplr}\r| ${cmplr}\t`)) != -1) {
-                return [wandbox.compilers_arr.normal[i]];
+            const cmplr = wandbox.compilers_arr.lower[i];
+            if (this.hasWord(message.content.toLowerCase(), cmplr)) {
+              return [wandbox.compilers_arr.normal[i]];
             }
         }
     }
