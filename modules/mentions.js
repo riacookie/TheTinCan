@@ -385,7 +385,7 @@ module.exports.getNumbers = message => new Promise((resolve, reject) => {
             }
             for (let i = 0; i < arr.length; i++) {
                 const word = arr[i];
-                if (word.length != 18 && Number(word)) {
+                if (word.length != 18 && Number(word) != NaN) {
                     r.numbers.push(Number(word));
                 }
             }
@@ -413,7 +413,7 @@ module.exports.getNumber = message => new Promise((resolve, reject) => {
         else {
             for (let i = 0; i < arr.length; i++) {
                 const word = arr[i];
-                if (word.length != 18 && Number(word)) {
+                if (word.length != 18 && Number(word) != NaN) {
                     resolve({
                         number: Number(word),
                         code: 0
