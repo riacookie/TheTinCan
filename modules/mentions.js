@@ -440,8 +440,6 @@ module.exports.hasWord = async (str, word) => {
 module.exports.getLanguage = async message => {
     for (let i = 0; i < wandbox.languages.lower.length; i++) {
         const language = wandbox.languages.lower[i];
-        debug(language);
-        debug(await this.hasWord(message.content.toLowerCase(), language));
         if (await this.hasWord(message.content.toLowerCase(), language)) {
             return wandbox.languages.normal[i];
         }
@@ -450,7 +448,6 @@ module.exports.getLanguage = async message => {
 
 module.exports.getCompiler = async message => {
     let lang = await this.getLanguage(message);
-    debug(lang);
     let compiler;
     if (lang) {
         let i = 0;
