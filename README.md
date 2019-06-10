@@ -1,6 +1,9 @@
 # TheTinCan
 Unfinished discord.js bot.
 #### Note : This source isn't meant to be copied or reused, it's opensource for viewers/users to understand how it works.
+
+### Prefix : `..`
+
 ## Future Updates Info :
 - Pending Feature(s) : Moderation.
 
