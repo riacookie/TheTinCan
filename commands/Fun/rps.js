@@ -15,7 +15,7 @@ module.exports = async message => {
             let result = (botChoice == 'rock' && userChoice == 'paper')
                 || (botChoice == 'paper' && userChoice == 'scissors')
                 || (botChoice == 'scissors' && userChoice == 'rock')
-                    ? 'win' : 'loose';
+                    ? 'You win, I loose' : botChoice == userChoice ? 'It\'s a tie' : 'You loose, I win';
             return await response.send(response.create({
                 message: message,
                 author: message.author,
@@ -23,7 +23,7 @@ module.exports = async message => {
                 fields: {
                     'You chose': userChoice,
                     'I chose': botChoice,
-                    'Result': `You ${result}`
+                    'Result': result
                 },
                 error: 'Your parents interrupted the game'
             }));
