@@ -5,7 +5,7 @@ module.exports = async message => {
         if (bot.commands.cmds[cmd]) {
             let fields = bot.commands.info[bot.commands.cmds[cmd]];
             for (let i = 0; i < fields.Examples.length; i++) {
-                fields.Examples[i] = eval('`' + fields.Examples[i] + '`');
+                fields.Examples[i] = eval('`' + fields.Examples[i].replace(/`/g, '\\`') + '`');
             }
             return await response.send(response.create({
                 message: message,
