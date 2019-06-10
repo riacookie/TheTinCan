@@ -15,7 +15,7 @@ module.exports = async message => {
             let result = (botChoice == 'rock' && userChoice == 'paper')
                 || (botChoice == 'paper' && userChoice == 'scissors')
                 || (botChoice == 'scissors' && userChoice == 'rock')
-                    ? 'You win, I loose' : botChoice == userChoice ? 'It\'s a tie' : 'You loose, I win';
+                    ? 'You win, I lose' : botChoice == userChoice ? 'It\'s a tie' : 'You lose, I win';
             return await response.send(response.create({
                 message: message,
                 author: message.author,
