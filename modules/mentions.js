@@ -448,6 +448,7 @@ module.exports.getLanguage = async message => {
 
 module.exports.getCompiler = async message => {
     let lang = await this.getLanguage(message);
+    debug(lang);
     let compiler;
     if (lang) {
         let i = 0;
