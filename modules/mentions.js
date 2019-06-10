@@ -431,9 +431,9 @@ module.exports.getNumber = message => new Promise((resolve, reject) => {
 })
 
 module.exports.hasWord = async (str, word) => {
-    str = str.replace(/\r|\n|\t/g, ' ');
+    str = str.replace(/\r|\n|\t/, ' ').replace(prefix, ' ');
     if (str.endsWith(` ${word}`)) return true;
-    if (str.includes(` ${str} `)) return true;
+    if (str.includes(` ${word} `)) return true;
     return false;
 }
 
