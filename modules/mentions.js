@@ -431,8 +431,8 @@ module.exports.getNumber = message => new Promise((resolve, reject) => {
 })
 
 module.exports.hasWord = async (str, word) => {
-    if (str.endsWith(word)) return true;
     str = str.replace(/\r|\n|\t/g, ' ');
+    if (str.endsWith(` ${word}`)) return true;
     if (str.includes(` ${str} `)) return true;
     return false;
 }
@@ -451,9 +451,9 @@ module.exports.getCompiler = async message => {
     let compiler;
     if (lang) {
         let i = 0;
-        do {
+        while (compiler.includes('head')); {
             compiler = wandbox.compilers.normal[lang][i++];
-        } while (compiler.includes('head'));
+        }
         return [compiler, lang];
     }
     else {
