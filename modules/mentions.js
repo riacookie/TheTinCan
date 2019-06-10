@@ -440,7 +440,7 @@ module.exports.hasWord = async (str, word) => {
 module.exports.getLanguage = async message => {
     for (let i = 0; i < wandbox.languages.lower.length; i++) {
         const language = wandbox.languages.lower[i];
-        if (this.hasWord(message.content.toLowerCase(), language)) {
+        if (await this.hasWord(message.content.toLowerCase(), language)) {
             return wandbox.languages.normal[i];
         }
     }
@@ -459,7 +459,7 @@ module.exports.getCompiler = async message => {
     else {
         for (let i = 0; i < wandbox.compilers_arr.lower.length; i++) {
             const cmplr = wandbox.compilers_arr.lower[i];
-            if (this.hasWord(message.content.toLowerCase(), cmplr)) {
+            if (await this.hasWord(message.content.toLowerCase(), cmplr)) {
               return [wandbox.compilers_arr.normal[i]];
             }
         }
