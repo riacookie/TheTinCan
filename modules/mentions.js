@@ -470,7 +470,10 @@ module.exports.getCompiler = async message => {
 module.exports.getCode = async (message, o) => {
     let code = shiftWord(message.content);
     let flag = o && code.replace(/\r|\n|\t| /g, '').toLowerCase().startsWith(o.toLowerCase());
-    if (flag) o = o.toLowerCase();
+    if (flag) {
+        o = o.toLowerCase();
+        code = code.slice(code.toLowerCase().indexOf(o) + o.length);
+    }
     let clean = () => {
         while ([' ', '\r', '\n', '\t'].includes(code.slice(0, 1))) {
             code = code.slice(1);
@@ -479,9 +482,6 @@ module.exports.getCode = async (message, o) => {
     clean();
     let arr = message.content.replace(/\r|\n|\t/g, ' ').split(' ');
     for (let i = 0; i < arr.length; i++) {
-        if (flag && arr[i].toLowerCase() == o) {
-            code = code.replace(arr[i], '');
-        }
         if (arr[i].startsWith('```')) {
             code = code.slice(code.indexOf(arr[i]) + arr[i].length);
             break;
