@@ -471,6 +471,7 @@ module.exports.getCode = async (message, o) => {
     let code = shiftWord(message.content);
     if (o) {
         let codeLower = code.toLowerCase();
+        debug(codeLower.indexOf(o.toLowerCase()) != -1);
         if (codeLower.indexOf(o.toLowerCase()) != -1) {
             code = code.slice(codeLower.indexOf(o.toLowerCase()) + o.length);
         }
