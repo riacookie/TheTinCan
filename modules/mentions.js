@@ -471,8 +471,7 @@ module.exports.getCode = async (message, o) => {
     let code = shiftWord(message.content);
     let flag = o && code.replace(/\r|\n|\t| /g, '').toLowerCase().startsWith(o.toLowerCase());
     if (flag) {
-        o = o.toLowerCase();
-        code = code.slice(code.toLowerCase().indexOf(o) + o.length);
+        code = code.slice(code.toLowerCase().indexOf(o.toLowerCase()) + o.length);
     }
     let clean = () => {
         while ([' ', '\r', '\n', '\t'].includes(code.slice(0, 1))) {
