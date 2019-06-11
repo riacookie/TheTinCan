@@ -27,6 +27,13 @@ Client.on('message', async message => {
                 debug(error);
             }
         }
+        else if (wandbox.languages.lower.includes(cmd.toLowerCase())) {
+            try {
+                await require(`../commands/${bot.commands.files['compile']}`)(message);
+            } catch (error) {
+                debug(error);
+            }
+        }
         else {
             debug(`invalid command : ${cmd}`);
         }
