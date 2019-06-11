@@ -469,9 +469,11 @@ module.exports.getCompiler = async message => {
 
 module.exports.getCode = async (message, o) => {
     let code = shiftWord(message.content);
-    let codeLower = code.toLowerCase();
-    if (o && codeLower.indexOf(o.toLowerCase()) != -1) {
-        code = code.slice(codeLower.indexOf(o.toLowerCase()) + o.length);
+    if (o) {
+        let codeLower = code.toLowerCase();
+        if (codeLower.indexOf(o.toLowerCase()) != -1) {
+            code = code.slice(codeLower.indexOf(o.toLowerCase()) + o.length);
+        }
     }
     let clean = () => {
         while ([' ', '\r', '\n', '\t'].includes(code.slice(0, 1))) {
