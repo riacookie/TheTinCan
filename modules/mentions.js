@@ -470,8 +470,7 @@ module.exports.getCompiler = async message => {
 module.exports.getCode = async (message, o) => {
     let code = shiftWord(message.content);
     let codeLower = code.toLowerCase();
-    let flag = o;
-    if (flag && codeLower.indexOf(o.toLowerCase()) != -1) {
+    if (o && codeLower.indexOf(o.toLowerCase()) != -1) {
         code = code.slice(codeLower.indexOf(o.toLowerCase()) + o.length);
     }
     let clean = () => {
