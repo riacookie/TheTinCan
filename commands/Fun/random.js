@@ -11,7 +11,7 @@ module.exports = async message => {
             return await response.send(response.create({
                 message: message,
                 author: message.author,
-                title: `Random numbet between ${numbers[0]}, ${numbers[1]}`,
+                title: `Random number between ${numbers[0]}, ${numbers[1]}`,
                 fields: {
                     Result: randomInt(numbers[0], numbers[1])
                 },
