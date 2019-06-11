@@ -469,39 +469,26 @@ module.exports.getCompiler = async message => {
 
 module.exports.getCode = async (message, o) => {
     let code = shiftWord(message.content);
-    if (o && code.replace(/\r|\n|\t| /g, '').toLowerCase().startsWith(o.toLowerCase())) {
-        o = o.toLowerCase();
-        let arr = message.content.replace(/\r|\n|\t/g, ' ').split(' ');
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i].toLowerCase() == o) {
-                code = code.replace(arr[i], '');
-            }
-            if (arr[i].startsWith('```')) {
-                code = code.replace(arr[i], '');
-                break;
-            }
-        }
-        if (code.lastIndexOf('```') != -1) {
-            code = code.slice(0, code.lastIndexOf('```'));
-        }
-    }
+    let flag = o && code.replace(/\r|\n|\t| /g, '').toLowerCase().startsWith(o.toLowerCase());
+    if (flag) o = o.toLowerCase();
     let clean = () => {
         while ([' ', '\r', '\n', '\t'].includes(code.slice(0, 1))) {
             code = code.slice(1);
         }
     }
     clean();
-    if (code.startsWith('```')) {
-        let line = code.slice(0, code.search(/\r\n|\n|\r/));
-        if (!line.includes(' ')) {
-            code = code.replace(line, '');
+    let arr = message.content.replace(/\r|\n|\t/g, ' ').split(' ');
+    for (let i = 0; i < arr.length; i++) {
+        if (flag && arr[i].toLowerCase() == o) {
+            code = code.replace(arr[i], '');
         }
-        else {
-            code = code.replace('```', '');
+        if (arr[i].startsWith('```')) {
+            code = code.slice(code.indexOf(arr[i]) + arr[i].length);
+            break;
         }
-        if (code.indexOf('```') != -1) {
-            code = code.substring(0, code.lastIndexOf('```'));
-        }
+    }
+    if (code.lastIndexOf('```') != -1) {
+        code = code.slice(0, code.lastIndexOf('```'));
     }
     clean();
     return code;
