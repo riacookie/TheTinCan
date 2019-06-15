@@ -18,7 +18,7 @@ module.exports = async message => {
                     });
                 }
                 let targetIdentity = await management.identity.get(mention.user.id);
-                if (targetIdentity && userIdentity > targetIdentity) {
+                if (userIdentity > targetIdentity) {
                     let isBlacklisted = await management.isBlacklisted(mention.user.id);
                     if (t == 'add') {
                         if (isBlacklisted) {
@@ -68,7 +68,7 @@ module.exports = async message => {
                 else {
                     return await response.error({
                         message: message,
-                        error: 'Specified user has same or higher identty than yours'
+                        error: 'Specified user has same or higher identity than yours'
                     });
                 }
             }
