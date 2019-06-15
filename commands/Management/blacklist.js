@@ -5,7 +5,7 @@ module.exports = async message => {
             let t = firstWord(shiftWord(message.content)).toLowerCase();
             if (t == 'add' || t == 'remove') {
                 let mention = await mentions.getUser(message);
-                if (mention.code > 0) {
+                if (mention.code < 0) {
                     return await response.error({
                         message: message,
                         error: 'No user specified'
