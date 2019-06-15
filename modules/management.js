@@ -40,7 +40,7 @@ module.exports.identity.compare = (a, t, b) => {
 };
 
 module.exports.identity.get = async userid => {
-    let data = await friebase.get(`/users/${userid}`);
+    let data = await firebase.get(`/users/${userid}`);
     if (data && data.id) {
         return Number(data.id);
     }
