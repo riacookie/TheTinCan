@@ -9,7 +9,6 @@ module.exports = async message => {
                 page: page
             });
             return await response.send(response.create({
-                author: message.author,
                 message: message,
                 title: 'Supported languages',
                 fields: fields.items,

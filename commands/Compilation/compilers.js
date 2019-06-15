@@ -17,7 +17,6 @@ module.exports = async message => {
                 page: page
             });
             return await response.send(response.create({
-                author: message.author,
                 message: message,
                 title: `Available compilers for ${language}`,
                 fields: fields.items,

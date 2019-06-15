@@ -430,6 +430,68 @@ module.exports.getNumber = message => new Promise((resolve, reject) => {
     }
 })
 
+module.exports.getIdentities = message => new Promise((resolve, reject) => {
+    try {
+        let arr = message.content.split(' ');
+        if (arr.length <= 1) {
+            resolve({
+                code: -1
+            });
+        }
+        else {
+            let list = [];
+            for (let i = 0; i < arr.length; i++) {
+                const word = arr[i];
+                let pos = management.identity.getPosition(word);
+                if (pos != undefined) {
+                    list.push(pos);
+                }
+            }
+            if (list.length > 0) {
+                resolve({
+                    code: 0,
+                    identities: list
+                });
+            }
+            else {
+                resolve({
+                    code: -2
+                });
+            }
+        }
+    } catch (error) {
+        reject(error);
+    }
+}
+
+module.exports.getIdentiy = message => new Promise((resolve, reject) => {
+    try {
+        let arr = message.content.split(' ');
+        if (arr.length <= 1) {
+            resolve({
+                code: -1
+            });
+        }
+        else {
+            for (let i = 0; i < arr.length; i++) {
+                const word = arr[i];
+                let pos = management.identity.getPosition(word);
+                if (pos != undefined) {
+                    resolve({
+                        code: 0,
+                        identity: pos
+                    });
+                }
+            }
+            resolve({
+                code: -2
+            });
+        }
+    } catch (error) {
+        reject(error);
+    }
+}
+
 module.exports.hasWord = async (str, word) => {
     str = str.replace(/\r|\n|\t/, ' ').replace(prefix, ' ');
     if (str.endsWith(` ${word}`)) return true;

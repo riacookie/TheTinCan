@@ -50,7 +50,7 @@ module.exports.error = async options => {
     try {
         let msg;
         if (options.channel) msg = await options.channel.send(options.error);
-        else msg = await options.message.reply('**Error : **' + options.error);
+        else msg = await options.message.reply('**Error : **' + options.error + (options.error.endsWith('.') ? '' : '.'));
         return msg;
     } catch (error) {
         debug(error);
@@ -108,7 +108,12 @@ module.exports.create = options => {
             if (value instanceof Array) value = value.join(', ');
             value = value.toString();
             if (!(['`', '.', '!', '?'].includes(value.slice(value.length - 1)))) value = value + '.';
-            let text = `:black_small_square: **${key} ${options.seperator || ':'}** ${value}`;
+            let text;
+            if (options.noKey) {
+                text = = `:black_small_square: ${value}`;
+            } else {
+               text = `:black_small_square: **${key} ${options.seperator || ':'}** ${value}`;
+            }
             if (options.nokey) text = `:black_small_square: ${value}`;
             if (i != 0 && !options.singleline) text = '\n' + text;
             result.text += text;

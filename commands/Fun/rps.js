@@ -18,7 +18,6 @@ module.exports = async message => {
                     ? 'You win, I lose' : botChoice == userChoice ? 'It\'s a tie' : 'You lose, I win';
             return await response.send(response.create({
                 message: message,
-                author: message.author,
                 title: 'Rock Paper Scissors',
                 fields: {
                     'You chose': userChoice,

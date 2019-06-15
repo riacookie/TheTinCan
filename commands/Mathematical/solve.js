@@ -21,7 +21,6 @@ module.exports = async message => {
                 });
             }
             let config = {
-                author: message.author,
                 message: message,
                 title: math.toString(),
                 error: 'Failed to reply with answer',

@@ -10,11 +10,11 @@ module.exports = async message => {
         else {
             return await response.send(response.create({
                 message: message,
-                author: message.author,
                 title: `Random number between ${numbers[0]}, ${numbers[1]}`,
-                fields: {
-                    Result: randomInt(numbers[0], numbers[1])
-                },
+                fields: [
+                    randomInt(numbers[0], numbers[1])
+                ],
+                noKey: true,
                 error: 'Failed to get random number'
             }));
         }

@@ -8,7 +8,6 @@ module.exports = async message => {
         }
         return await response.send(response.create({
             message: message,
-            author: message.author,
             title: `Rolled some(${die}) die`,
             fields: {
                 Rolls: result.join(', ')

@@ -44,7 +44,6 @@ module.exports = async message => {
                 });
                 image.name = 'graph.png';
                 return await response.send(response.create({
-                    author: message.author,
                     message: message,
                     error: 'failed to upload received graph',
                     image: image,

@@ -6,8 +6,8 @@
         require("dotenv").config()
         debug(`Parsed environment variables`);
     }
-    await require("./runtime/globals.js").init();
+    await require("./runtime/globals.js");
     debug(`Initilized globals.js`);
-    require("./runtime/bot.js");
+    await require("./runtime/bot.js")();
     debug(`Called bot.js`);
 })();

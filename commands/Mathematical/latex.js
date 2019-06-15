@@ -15,7 +15,6 @@ module.exports = async message => {
                 image.attachment = body;
                 return await response.send(response.create({
                     message: message,
-                    author: message.author,
                     error: 'Failed to return latex',
                     title: `LaTeX of "${input}"`,
                     image: image

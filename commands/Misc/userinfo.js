@@ -14,7 +14,6 @@ module.exports = async message => {
                     'Account Created At': moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
                     Avatar: user.displayAvatarURL
                 },
-                author: message.author,
                 title: `${user.username}'s Information`,
                 error: 'Something went wrong, failed to fetch user\'s info',
                 thumbnail: user.displayAvatarURL,
@@ -38,7 +37,6 @@ module.exports = async message => {
                     'Account created at': moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
                     Avatar: user.displayAvatarURL
                 },
-                author: message.author,
                 title: `${user.username}'s Information`,
                 error: 'Something went wrong, failed to fetch user\'s info',
                 thumbnail: user.displayAvatarURL,

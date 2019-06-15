@@ -25,11 +25,11 @@ module.exports = async message => {
         }
         return await response.send(response.create({
             message: message,
-            author: message.author,
-            title: 'Bot\'s uptime',
-            fields: {
-                'Up for': `${data.days} day(s), ${data.hours} hour(s), ${data.minutes} minute(s), ${data.seconds} second(s)`
-            },
+            title: 'Bot is up for',
+            fields: [
+                `${data.days} day(s), ${data.hours} hour(s), ${data.minutes} minute(s), ${data.seconds} second(s)`
+            ],
+            noKey: true,
             error: 'Failed to fetch information'
         }));
     } catch(error) {

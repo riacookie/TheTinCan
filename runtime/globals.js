@@ -1,4 +1,4 @@
-module.exports.init = async () => {
+module.exports = async () => {
     let packages = {
         request: 'request',
         firebase_admin: 'firebase-admin',
@@ -45,7 +45,24 @@ module.exports.init = async () => {
     global['shiftWord'] = t => {
         let r = t.replace(firstWord(t), '');
         return r.slice(1, r.length);
-    };
+    }
+    global['flipObject'] = o => {
+        let r = {};
+        let keys = Object.keys(o);
+        for (let i = 0; i < keys.length; i++) {
+            r[o[keys[i]]] = keys[i];
+        }
+        return r;
+    }
+    global['toLowerCaseKeys'] = o => {
+        let r = {};
+        let keys = Object.keys(o);
+        for (let i = 0; i < keys.length; i++) {
+            r[keys[i].toLowerCase()] = o[keys[i]];
+        }
+        return r;
+    }
+
     global['Client'] = new Discord.Client();
 
     debug(`initilized side functions`);

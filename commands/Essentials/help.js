@@ -9,9 +9,13 @@ module.exports = async message => {
             }
             return await response.send(response.create({
                 message: message,
-                author: message.author,
                 title: 'Commands/' + bot.commands.files[bot.commands.cmds[cmd]],
-                fields: fields,
+                fields: {
+                    Category: fields.Category,
+                    About: fields.About,
+                    Syntax: fields.Syntax,
+                    Examples: fields.Examples
+                },
                 error: 'Failed to fetch command list',
                 footer: {
                     icon_url: Client.displayAvatarURL,
@@ -27,7 +31,6 @@ module.exports = async message => {
             }
             return await response.send(response.create({
                 message: message,
-                author: message.author,
                 title: 'Commands',
                 fields: data,
                 error: 'Failed to fetch command list',

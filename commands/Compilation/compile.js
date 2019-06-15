@@ -55,7 +55,6 @@ module.exports = async message => {
                 }
                 fields.Compiler = compiler;
                 return await response.send(response.create({
-                    author: message.author,
                     message: message,
                     title: 'Compiler result',
                     fields: fields,

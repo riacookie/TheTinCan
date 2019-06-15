@@ -41,7 +41,6 @@ module.exports = async message => {
                     }
                     return await response.send(response.create({
                         message: message,
-                        author: message.author,
                         title: `Definition of ${m}`,
                         fields: answer,
                         seperator: '.',

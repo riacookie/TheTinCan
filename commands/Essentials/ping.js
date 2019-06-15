@@ -26,7 +26,6 @@ module.exports = async message => {
         let time = msg.createdTimestamp - message.createdTimestamp;
         if (flag) msg = _;
         return await response.send(response.create({
-            author: message.author,
             message: message,
             title: 'Pong!',
             edit: msg,

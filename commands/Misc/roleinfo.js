@@ -6,7 +6,6 @@ module.exports = async message => {
                 role = role.role
                 return await response.send(response.create({
                     message: message,
-                    author: message.author,
                     error: 'Failed to fetch role information',
                     title: `Information about role "${role.name}"`,
                     color: role.color,

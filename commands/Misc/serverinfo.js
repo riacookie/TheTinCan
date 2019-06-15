@@ -3,7 +3,6 @@ module.exports = async message => {
         if (message.guild) {
             return await response.send(response.create({
                 message: message,
-                author: message.author,
                 error: 'Failed to fetch guild information',
                 title: `${message.guild.name}'s Information`,
                 fields: {
