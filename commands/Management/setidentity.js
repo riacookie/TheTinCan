@@ -34,7 +34,7 @@ module.exports = async message => {
                 message: message,
                 title: 'Identity change',
                 fields: [
-                    `${userMention.user.tag} (${userMention.user.id}) 's identity has been changed to ${await management.identity.getName(identityMention.identity))}`
+                    `${userMention.user.tag} (${userMention.user.id}) 's identity has been changed to ${await management.identity.getName(identityMention.identity)}`
                 ],
                 noKey: true,
                 footer: {
