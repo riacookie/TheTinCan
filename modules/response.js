@@ -110,9 +110,9 @@ module.exports.create = options => {
             if (!(['`', '.', '!', '?'].includes(value.slice(value.length - 1)))) value = value + '.';
             let text;
             if (options.noKey) {
-                text = = `:black_small_square: ${value}`;
+                text = `:black_small_square: ${value}`;
             } else {
-               text = `:black_small_square: **${key} ${options.seperator || ':'}** ${value}`;
+                text = `:black_small_square: **${key} ${options.seperator || ':'}** ${value}`;
             }
             if (options.nokey) text = `:black_small_square: ${value}`;
             if (i != 0 && !options.singleline) text = '\n' + text;
