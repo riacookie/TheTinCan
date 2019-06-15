@@ -4,7 +4,7 @@ module.exports.get = (path) => new Promise((resolve, reject) => {
             resolve(data.val());
         }
         else {
-            reject();
+            resolve();
         }
     },
     error => {

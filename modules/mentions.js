@@ -440,7 +440,7 @@ module.exports.getIdentities = message => new Promise((resolve, reject) => {
         }
         else {
             let list = [];
-            for (let i = 0; i < arr.length; i++) {
+            for (let i = 1; i < arr.length; i++) {
                 const word = arr[i];
                 let pos = management.identity.getPosition(word);
                 if (pos != undefined) {
@@ -473,7 +473,7 @@ module.exports.getIdentiy = message => new Promise((resolve, reject) => {
             });
         }
         else {
-            for (let i = 0; i < arr.length; i++) {
+            for (let i = 1; i < arr.length; i++) {
                 const word = arr[i];
                 let pos = management.identity.getPosition(word);
                 if (pos != undefined) {
