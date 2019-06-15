@@ -11,7 +11,7 @@ module.exports = async message => {
                         error: 'No user specified'
                     });
                 }
-                if (mentions.user.id == message.author.id) {
+                if (mention.user.id == message.author.id) {
                     return await response.error({
                         message: message,
                         error: 'You can\'t use this command on youself'
