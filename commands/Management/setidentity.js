@@ -29,7 +29,7 @@ module.exports = async message => {
                     error: 'Specified user\'s identity is same or higher than yours'
                 });
             }
-            await management.identity.setUserIdentity(userMention.user.id, identityMention.identity);
+            await management.identity.set(userMention.user.id, identityMention.identity);
             return await response.send(response.create({
                 message: message,
                 title: 'Identity change',
