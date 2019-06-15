@@ -462,7 +462,7 @@ module.exports.getIdentities = message => new Promise((resolve, reject) => {
     } catch (error) {
         reject(error);
     }
-}
+})
 
 module.exports.getIdentiy = message => new Promise((resolve, reject) => {
     try {
@@ -490,7 +490,7 @@ module.exports.getIdentiy = message => new Promise((resolve, reject) => {
     } catch (error) {
         reject(error);
     }
-}
+})
 
 module.exports.hasWord = async (str, word) => {
     str = str.replace(/\r|\n|\t/, ' ').replace(prefix, ' ');
