@@ -23,7 +23,7 @@ module.exports = async message => {
                 });
             }
             let targetIdentity = await management.identity.get(userMention.user.id);
-            if (userIdentity >= targetIdentity) {
+            if (userIdentity <= targetIdentity) {
                 return await response.error({
                     message: message,
                     error: 'Specified user\'s identity is same or higher than yours'
