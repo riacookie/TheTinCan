@@ -6,7 +6,7 @@ module.exports = async message => {
             message: message,
             title: `${userMention.user.tag} (${userMention.user.id}) 's identity information`,
             fields: {
-                Identity: `${await management.identity.getName(userIdentity.identity)} (${userIdentity.identity})`,
+                Identity: `${await management.identity.getName(userIdentity)} (${userIdentity})`,
                 Blacklisted: await management.isBlacklisted(userMention.user.id)
             },
             footer: {
