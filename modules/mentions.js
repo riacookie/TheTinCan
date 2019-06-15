@@ -464,7 +464,7 @@ module.exports.getIdentities = message => new Promise((resolve, reject) => {
     }
 })
 
-module.exports.getIdentiy = message => new Promise((resolve, reject) => {
+module.exports.getIdentity = message => new Promise((resolve, reject) => {
     try {
         let arr = message.content.split(' ');
         if (arr.length <= 1) {
