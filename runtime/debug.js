@@ -1,4 +1,4 @@
-    exports.getCaller = () => {
+exports.getCaller = () => {
     let c, e, o, f, r;
     [_, e, o] = [undefined, new Error(), Error.prepareStackTrace];
     Error.prepareStackTrace = (_, s) => s;
