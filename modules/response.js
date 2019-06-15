@@ -62,7 +62,7 @@ module.exports.create = options => {
         embed: {
             embed: {
                 author: {
-                    name: options.author.tag || options.message.author.tag,
+                    name: options.author ? options.author.tag : options.message.author.tag,
                     icon_url: options.author.displayAvatarURL || options.message.author.displayAvatarURL
                 },
                 color: options.color || 0x100b42,
