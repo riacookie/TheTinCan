@@ -72,10 +72,12 @@ module.exports = async () => {
         databaseURL: process.env.firebase_url
     });
     global['database'] = firebase_admin.database();
+    
     global['firebase'] = require('../modules/firebase');
     global['mentions'] = require('../modules/mentions');
     global['requestAsync'] = require('../modules/requestAsync');
     global['response'] = require('../modules/response');
+    global['management'] = require('../modules/management');
 
     debug(`initilized custom modules`);
 
