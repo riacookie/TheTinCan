@@ -38,7 +38,7 @@ module.exports.getUsers = (message) => new Promise(async (resolve, reject) => {
             }
             let arr = message.content.replace(/<|@|#|!|&|>/g, '').replace(/\r|\n|\t/g, ' ').split(' ');
             for (let i = 1; i < arr.length; i++) {
-                if (arr[i].length == 18 && Number(arr[i])) {
+                if (Number(arr[i])) {
                     let user = await Client.fetchUser(arr[i]);
                     if (user) {
                         r.users.push(user);
@@ -55,7 +55,7 @@ module.exports.getUsers = (message) => new Promise(async (resolve, reject) => {
                 }
                 if(arr[i].includes('.')) {
                     let t = base64.decode(arr[i].slice(0, arr[i].indexOf('.')));
-                    if (t.length == 18 && Number(t));
+                    if (Number(t));
                     let user = await Client.fetchUser(t);
                     if (user) {
                         r.users.push(user);
@@ -143,7 +143,7 @@ module.exports.getUser = message => new Promise(async (resolve, reject) => {
             }
             let arr = message.content.replace(/<|@|#|!|&|>/g, '').replace(/\r|\n|\t/g, ' ').split(' ');
             for (let i = 1; i < arr.length; i++) {
-                if (arr[i].length == 18 && Number(arr[i])) {
+                if (Number(arr[i])) {
                     let user = await Client.fetchUser(arr[i]);
                     if (user) {
                         if (message.guild) {
@@ -169,7 +169,7 @@ module.exports.getUser = message => new Promise(async (resolve, reject) => {
                 }
                 if(arr[i].includes('.')) {
                     let t = base64.decode(arr[i].slice(0, arr[i].indexOf('.')));
-                    if (t.length == 18 && Number(t));
+                    if (Number(t));
                     let user = await Client.fetchUser(t);
                     if (user) {
                         if (message.guild) {
@@ -385,7 +385,7 @@ module.exports.getNumbers = message => new Promise((resolve, reject) => {
             }
             for (let i = 0; i < arr.length; i++) {
                 const word = arr[i];
-                if (word.length != 18 && (Number(word) || Number(word) == 0)) {
+                if (Number(word) || Number(word) == 0) {
                     r.numbers.push(Number(word));
                 }
             }
@@ -413,7 +413,7 @@ module.exports.getNumber = message => new Promise((resolve, reject) => {
         else {
             for (let i = 0; i < arr.length; i++) {
                 const word = arr[i];
-                if (word.length != 18 && (Number(word) || Number(word) == 0)) {
+                if ((Number(word) || Number(word) == 0)) {
                     resolve({
                         number: Number(word),
                         code: 0
