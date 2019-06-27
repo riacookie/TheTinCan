@@ -33,7 +33,7 @@ module.exports = () => new Promise((resolve, reject) => {
             else if (!blacklisted) {
                 let lang = cmd.toLowerCase();
                 if (!wandbox.languages.lower.includes(lang)) lang += ' ' + firstWord(shiftWord(message.content.toLowerCase()));
-                let i = wandbox.languages.lower.indexOf(lang)
+                let i = wandbox.languages.lower.indexOf(lang);
                 if (i != -1) {
                     try {
                         await require(`../commands/${bot.commands.files['compile']}`)(message, wandbox.languages.normal[i]);
