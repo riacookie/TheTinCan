@@ -30,11 +30,15 @@ module.exports = async message => {
                 const pod = body.queryresult.pods[i];
                 if (pod.numsubpods > 0) {
                     if (pod.id == 'Result' || pod.id == 'Solution' || pod.id == 'DecimalApproximation') {
-                        config.fields[pod.title] = pod.subpods[0].plaintext;
-                        if (pod.subpods[0].img.src && !config.image) {
-                            config.image = {};
-                            config.image.url = pod.subpods[0].img.src;
+                        for (let j = 0; j < pod.subpods.length; j++) {
+                            const subpod = pod.subpods[j];
+                            config.fields[pod.subpods.length == 1 ? pod.title : `${pod.title} (${j + 1})`] = subpod.plaintext;
+                            if (pod.subpods[0].img.src && !config.image) {
+                                config.image = {};
+                                config.image.url = subpod.img.src;
+                            }
                         }
+                        
                     }
                     else if (pod.scanner == 'Data') {
                         if (!(pod.id.includes('ChemicalNamesAndFormulas:') || pod.id.includes('ChemicalProperties:') || pod.id.includes('Thermodynamics:') || pod.id.includes('ReactionStructures:') || pod.id.includes('Constant:'))) {
