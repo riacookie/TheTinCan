@@ -63,6 +63,18 @@ module.exports = async () => {
         return r;
     }
 
+    global['tillNthOccurrence'] = (t, p, n) => {
+        let r = '';
+        let j = 0;
+        for (let i = 0; i < t.length; i++) {
+            const c = t[i];
+            if (c == p) j++;
+            if (j == n) break;
+            r += c;
+        }
+        return r;
+    }
+
     global['Client'] = new Discord.Client();
 
     debug(`initilized side functions`);

@@ -1,6 +1,6 @@
-module.exports = async message => {
+module.exports = async (message, _lang) => {
     try {
-        let [compiler, lang] = await mentions.getCompiler(message);
+        let [compiler, lang] = await mentions.getCompiler(message, _lang);
         if (!compiler){
             return await response.error({
                 message: message,

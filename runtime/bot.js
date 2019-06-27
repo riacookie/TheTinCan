@@ -22,18 +22,23 @@ module.exports = () => new Promise((resolve, reject) => {
     Client.on('message', async message => {
         if (!message.author.bot && message.content.startsWith(process.env.prefix)) {
             let cmd = firstWord(message.content).toLowerCase().replace(process.env.prefix, '');
-            if (bot.commands.cmds[cmd] && (bot.commands.cmds[cmd] == 'identity' || (!(await management.isBlacklisted(message.author.id))))) {
+            let blacklisted = await management.isBlacklisted(message.author.id);
+            if (bot.commands.cmds[cmd] && (bot.commands.cmds[cmd] == 'identity' || !blacklisted)) {
                 try {
                     await require(`../commands/${bot.commands.files[bot.commands.cmds[cmd]]}`)(message);
                 } catch (error) {
                     debug(error);
                 }
             }
-            else if (!(await management.isBlacklisted(message.author.id)) && wandbox.languages.lower.includes(cmd.toLowerCase()) || wandbox.languages.lower.includes(cmd.toLowerCase() + ' ' + firstWord(shiftWord(message.content.toLowerCase())))) {
-                try {
-                    await require(`../commands/${bot.commands.files['compile']}`)(message);
-                } catch (error) {
-                    debug(error);
+            else if (!blacklisted) {
+                let lang = cmd.toLowerCase();
+                if (!wandbox.languages.lower.includes(lang)) lang += ' ' + firstWord(shiftWord(message.content.toLowerCase())));
+                if (wandbox.languages.lower.includes(lang)) {
+                    try {
+                        await require(`../commands/${bot.commands.files['compile']}`)(message, lang);
+                    } catch (error) {
+                        debug(error);
+                    }
                 }
             }
         }
