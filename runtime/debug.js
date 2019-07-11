@@ -1,30 +1,38 @@
-exports.getCaller = () => {
-    let c, e, o, f, r;
+module.exports.getCaller = () => {
+    let c, e, o, f, r, result;
     [_, e, o] = [undefined, new Error(), Error.prepareStackTrace];
     Error.prepareStackTrace = (_, s) => s;
-    f = a => a.stack.shift().getFileName();
-    [c, r] = [f(e), _];
-    for (let _ in e.stack) {
+    f = a => a.stack.shift();
+    [c, r] = [f(e).getFileName(), _];
+    for (let i = 0; i < e.stack.length; i++) {
         r = f(e);
-        if (r != c) break;
+        if (r.getFileName() != c) break;
     }
     Error.prepareStackTrace = o;
-    return r;
+    return r.getFileName() + ':' + r.getLineNumber();
 }
 
-exports.debug = (...messages) => {
-    process.stdout.write(`[${this.getCaller()}] : `);
+module.exports.debug = (...messages) => {
+    process.stdout.write(`\x1b[1m\x1b[36m${`[${this.getCaller()}] : `}\x1b[22m\x1b[0m`);
+    let flag = false;
     for (let i = 0; i < messages.length; i++) {
         const message = messages[i];
         if (message instanceof Error) {
+            process.stdout.write('\x1b[31m');
             console.error(message);
+            process.stdout.write('\x1b[0m');
+            flag = true;
         }
-        else if (!message || message instanceof Object) {
+        else if (typeof message != 'string') {
             console.log(message);
+            flag = true;
         }
         else {
+            process.stdout.write("\x1b[1m\x1b[32m'");
             process.stdout.write(message);
-        }
+            process.stdout.write("'\x1b[22m\x1b[0m ");
+            flag = false;
+        } 
     }
-    process.stdout.write('\n');
+    if (!flag) process.stdout.write('\n');
 }

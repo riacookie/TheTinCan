@@ -1,21 +1,17 @@
-module.exports = async message => {
-    try {
-        let userMention = await mentions.getUser(message);
-        let userIdentity = await management.identity.get(userMention.user.id);
-        return await response.send(response.create({
-            message: message,
-            title: `${userMention.user.tag} (${userMention.user.id}) 's identity information`,
-            fields: {
-                Identity: `${await management.identity.getName(userIdentity)} (${userIdentity})`,
-                Blacklisted: await management.isBlacklisted(userMention.user.id)
-            },
-            footer: {
-                icon_url: userMention.user.displayAvatarURL,
-                text: userMention.user.tag
-            },
-            error: 'Something went, failed to reply with specified user\'s identity'
-        }));
-    } catch (error) {
-        debug(error);
-    }
+module.exports = async ({message, content}) => {
+    let data = await mentions.getUsers(misc.string.shiftWord(content), message, false, 1);
+    if (!data.users.length) data.users.push(message.author);
+    const user = data.users[0];
+    const id = await management.identity.get(user.id);
+    return await response.create({
+        message: message,
+        title: `${user.username}'s identical information`,
+        fields: {
+            'Bot Identity': `${management.identity.getName(id)} (${id})`,
+            Blacklisted: management.isBlacklisted(user.id)
+        },
+        thumbnail: user.displayAvatarURL,
+        footer: user.id != message.author.id ? user.tag : _,
+        footer_icon: user.id != message.author.id ? user.displayAvatarURL : _
+    });
 }

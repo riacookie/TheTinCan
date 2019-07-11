@@ -1,52 +1,55 @@
-module.exports = () => new Promise((resolve, reject) => {
-    Client.login(process.env.token)
-
-    Client.on('ready', async () => {
-        resolve();
-        debug(`logged in as ${Client.user.tag} | ${Client.user.id}`);
-        debug(`prefix : ${prefix}`);
+module.exports = async () => {
+    client.login(process.env.token);
+    debug('logging in...');
+    client.on('ready', async () => {
+        debug(`logged in as ${client.user.tag} (${client.user.id}).`);
         try {
-            let m = await response.send(response.create({
-                author: Client.user,
-                title: 'Login',
-                description: `Logged in as ${Client.user.tag} (${Client.user.id})`,
-                error: `response.js:send() returned error`,
-                channel: Client.guilds.get(bot.debug.guild).channels.get(bot.debug.channel)
-            }));
-            if (m) debug(`sent init message`);
+            await client.user.setPresence({
+                game: {
+                    type: 'WATCHING',
+                    name: 'dreams.'
+                },
+                status: 'online'
+            });
+            await response.create({
+                channel: client.guilds.get(bot_data.debug.guild).channels.get(bot_data.debug.channel),
+                author: client.user,
+                title: `Login from host "${process.env.host}"`,
+                fields: {
+                    'Logged in as': {
+                        Username: client.user.tag,
+                        'User id': client.user.id
+                    },
+                    'Host prefix': prefix
+                },
+                footer: [`Logged in as ${client.user.id}`,  `host: ${process.env.host}`]
+            });
+            debug('sent init message.');
+            debug(`boot successful, total time taken : ${(new Date().getTime()) - boot_time}ms.`);
+            delete global['boot_time'];
         } catch (error) {
-            debug(`Promise response.js:send() was rejected`);
+            debug(error);
         }
-    })
-
-    Client.on('message', async message => {
-        if (!message.author.bot && message.content.startsWith(process.env.prefix)) {
-            let cmd = firstWord(message.content).toLowerCase().replace(process.env.prefix, '');
-            let blacklisted = await management.isBlacklisted(message.author.id);
-            if (bot.commands.cmds[cmd] && (bot.commands.cmds[cmd] == 'identity' || !blacklisted)) {
-                try {
-                    await require(`../commands/${bot.commands.files[bot.commands.cmds[cmd]]}`)(message);
-                } catch (error) {
-                    debug(error);
+    });
+    client.on('message', async message => {
+        try {
+            if (message.content.startsWith(prefix) && !message.author.bot && !management.isBlacklisted(message.author.id)) {
+                let cmd = misc.string.firstWord(message.content).replace(prefix, '').toLowerCase();
+                if (commands.names[cmd]) await run({
+                    message: message,
+                    cmd: cmd
+                });
+                else {
+                    let lang = cmd;
+                    if (!wandbox.lower.languages.includes(lang)) lang += ` ${misc.string.nthWord(message.content, 2)}`;
+                    if (wandbox.lower.languages.includes(lang)) await run({
+                        message: message,
+                        cmd: 'compile'
+                    });
                 }
             }
-            else if (!blacklisted) {
-                let lang = cmd.toLowerCase();
-                let i = wandbox.languages.lower.indexOf(lang);
-                if (i == -1) {
-                     lang += ' ' + firstWord(shiftWord(message.content.toLowerCase()));
-                     i = wandbox.languages.lower.indexOf(lang);;
-                }
-                if (i != -1) {
-                    lang = wandbox.languages.normal[i];
-                    debug(lang);
-                    try {
-                        await require(`../commands/${bot.commands.files['compile']}`)(message, lang);
-                    } catch (error) {
-                        debug(error);
-                    }
-                }
-            }
+        } catch (error) {
+            debug(error);
         }
-    })
-})
+    });
+}

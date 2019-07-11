@@ -1,6 +1,4 @@
 node_modules
 .env
 database.json
-.git
 moderation.js
-temp.js

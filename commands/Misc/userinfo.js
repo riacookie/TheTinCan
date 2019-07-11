@@ -1,53 +1,42 @@
-module.exports = async message => {
-    try {
-        let result = await mentions.getUser(message);
-        let user = result.member ? result.member.user : result.user;
-        let config;
-        if (!result.member) {
-            config = {
-                message: message,
-                fields: {
-                    'Account Type': user.bot ? 'Bot' : 'Human',
-                    Tag: user.tag,
-                    ID: user.id,
-                    Status: user.presence.status == 'offline' ? 'unknown' : user.presence.status,
-                    'Account Created At': moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
-                    Avatar: user.displayAvatarURL
-                },
-                title: `${user.username}'s Information`,
-                error: 'Something went wrong, failed to fetch user\'s info',
-                thumbnail: user.displayAvatarURL,
-                footer: {
-                    icon_url: user.displayAvatarURL,
-                    text: user.tag
-                }
-            }
-        }
-        else {
-            config = {
-                message: message,
-                fields: {
-                    'Account type': user.bot ? 'Bot' : 'Human',
-                    Tag: user.tag,
-                    ID: user.id,
-                    Status: user.presence.status,
-                    'Display name': result.member.displayName,
-                    Roles: result.member.roles.map(r => r.name != '@everyone' ? r.name : 'everyone').join(', '),
-                    'Guild joined at': moment.utc(result.member.joinedAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
-                    'Account created at': moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
-                    Avatar: user.displayAvatarURL
-                },
-                title: `${user.username}'s Information`,
-                error: 'Something went wrong, failed to fetch user\'s info',
-                thumbnail: user.displayAvatarURL,
-                footer: {
-                    icon_url: user.displayAvatarURL,
-                    text: user.tag
-                }
-            }
-        }
-        return await response.send(response.create(config));
-    } catch (error) {
-        debug(error);
+module.exports = async ({message, content}) => {
+    let data = await mentions.getUsers(misc.string.shiftWord(content), message, true, 1);
+    if (message.guild && message.guild.available && data.members.length == 0) data.members.push(await message.guild.fetchMember(message.author));
+    if (data.members.length > 0) {
+        const member = data.members[0];
+        return await response.create({
+            message: message,
+            title: `${member.user.username}'s information`,
+            fields: {
+                'Account Type': member.user.bot ? 'Bot' : 'Human',
+                Tag: member.user.tag,
+                ID: member.user.id,
+                Status: member.user.presence.status,
+                'Display Name': member.displayName,
+                Roles: member.roles.map(r => r.name).filter(n => n != '@everyone').join(', ') || 'None',
+                'Guild joined at': moment.utc(member.joinedAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
+                'Account created at': moment.utc(member.user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
+                Avatar: member.user.displayAvatarURL
+            },
+            thumbnail: member.user.displayAvatarURL,
+            footer: member.user.id != message.author.id ? member.user.tag : _,
+            footer_icon: member.user.id != message.author.id ? member.user.displayAvatarURL : _
+        });
     }
+    if (data.users.length == 0) data.users.push(message.author);
+    const user = data.users[0];
+    return await response.create({
+        message: message,
+        title: `${user.username}'s information`,
+        fields: {
+            'Account Type': user.bot ? 'Bot' : 'Human',
+            Tag: user.tag,
+            ID: user.id,
+            Status: user.presence.status == 'offline' ? 'unknown' : user.presence.status,
+            'Account created at': moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
+            Avatar: user.displayAvatarURL
+        },
+        thumbnail: user.displayAvatarURL,
+        footer: user.id != message.author.id ? user.tag : _,
+        footer_icon: user.id != message.author.id ? user.displayAvatarURL : _
+    });
 }

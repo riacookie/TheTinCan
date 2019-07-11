@@ -1,91 +1,42 @@
-module.exports = async message => {
-    try {
-        let userIdentity = await management.identity.get(message.author.id);
-        if (userIdentity && management.identity.compare(userIdentity, '>=', 'Moderator')) {
-            let t = firstWord(shiftWord(message.content)).toLowerCase();
-            if (t == 'add' || t == 'remove') {
-                let mention = await mentions.getUser(message);
-                if (mention.code < 0) {
-                    return await response.error({
-                        message: message,
-                        error: 'No user specified'
-                    });
-                }
-                if (mention.user.id == message.author.id) {
-                    return await response.error({
-                        message: message,
-                        error: 'You can\'t use this command on youself'
-                    });
-                }
-                let targetIdentity = await management.identity.get(mention.user.id);
-                if (userIdentity > targetIdentity) {
-                    let isBlacklisted = await management.isBlacklisted(mention.user.id);
-                    if (t == 'add') {
-                        if (isBlacklisted) {
-                            return await response.error({
-                                message: message,
-                                error: 'Specified user is already blacklisted'
-                            });
-                        }
-                        await management.addBlacklist(mention.user.id);
-                        return await response.send(response.create({
-                            message: message,
-                            title: 'Blacklist',
-                            fields: [
-                                `Added ${mention.user.tag} (${mention.user.id}) to blacklist`
-                            ],
-                            noKey: true,
-                            footer: {
-                                icon_url: mention.user.displayAvatarURL,
-                                text: mention.user.tag
-                            },
-                            error: 'Something went wrong, but the operation may have been completed successfully'
-                        }));
-                    }
-                    else {
-                        if (!isBlacklisted) {
-                            return await response.error({
-                                message: message,
-                                error: 'Specified user isn\'t blacklisted'
-                            });
-                        }
-                        await management.removeBlacklist(mention.user.id);
-                        return await response.send(response.create({
-                            message: message,
-                            title: 'Blacklist',
-                            fields: [
-                                `Removed ${mention.user.tag} (${mention.user.id}) from blacklist`
-                            ],
-                            noKey: true,
-                            footer: {
-                                icon_url: mention.user.displayAvatarURL,
-                                text: mention.user.tag
-                            },
-                            error: 'Something went wrong, but the operation may have been completed successfully'
-                        }));
-                    }
-                }
-                else {
-                    return await response.error({
-                        message: message,
-                        error: 'Specified user has same or higher identity than yours'
-                    });
-                }
-            }
-            else {
-                return await response.error({
-                    message: message,
-                    error: `Invalid arguments, see \`${prefix}help ${firstWord(message.content).replace(prefix, '')}\` for more information.`
-                });
-            }
-        }
-        else {
-            return await response.error({
-                message: message,
-                error: 'You don\'t meet the minimum identity requirement for using this command'
-            });
-        }
-    } catch (error) {
-        debug(error);
+module.exports = async ({message, content}) => {
+    const id = await management.identity.get(message.author.id);
+    if (!id) {
+        return await response.create({
+            message: message,
+            error: 'You don\'t have permission to use this command'
+        });
     }
+    const type = misc.string.nthWord(content, 2).toLowerCase();
+    if (type != 'add' && type != 'remove') return await response.create({
+        message: message,
+        error: `2nd parameter invalid, syntax : ${bot_data.commands.blacklist.syntax}`
+    });
+    const data = await mentions.getUsers(misc.string.shiftWords(content, 2), message, false, 1);
+    const user = data.users[0];
+    if (!user) return await response.create({
+        message: message,
+        error: 'Invalid user'
+    });
+    const target_id = await management.identity.get(user.id);
+    if (target_id >= id) return await response.create({
+        message: message,
+        error: 'Specified user\'s identity must be lower than yours'
+    });
+    const blacklisted = management.isBlacklisted(user.id);
+    if (type == 'add' && blacklisted) return await response.create({
+        message: message,
+        error: 'Specified user is already blacklisted'
+    });
+    if (type == 'remove' && !blacklisted) return await response.create({
+        message: message,
+        error: 'Specified user isn\'t in blacklist'
+    });
+    type == 'add' ? await management.addBlacklist(user.id) : management.removeBlacklist(user.id);
+    return await response.create({
+        message: message,
+        fields: `${type == 'add' ? 'Added' : 'Removed'} ${user.tag} (${user.id}) ${type == 'add' ? 'to' : 'from'} blacklist`,
+        thumbnail: user.displayAvatarURL,
+        footer: user.id != message.author.id ? user.tag : _,
+        footer_icon: user.id != message.author.id ? user.displayAvatarURL : _
+    });
 }

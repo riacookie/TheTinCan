@@ -1,14 +1,7 @@
-module.exports = async message => {
-    try {
-        return await response.send(response.create({
-            message: message,
-            title: 'Tossed a coin',
-            fields: {
-                Result: randomElement(['Heads', 'Tails'])
-            },
-            error: 'Coin fell out of hand'
-        }));
-    } catch(error) {
-        debug(error);
+module.exports = async ({message, content}) => await response.create({
+    message: message,
+    title: 'Tossed a coin',
+    fields: {
+        Result: misc.random.element(['Heads', 'Tails'])
     }
-}
+});

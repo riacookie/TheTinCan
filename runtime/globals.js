@@ -1,145 +1,70 @@
 module.exports = async () => {
     let packages = {
+        express: 'express',
         request: 'request',
         firebase_admin: 'firebase-admin',
-        Discord: 'discord.js',
+        discord: 'discord.js',
         moment: 'moment',
-        os: 'os'
-    }
-    let package_keys = Object.keys(packages);
+        os: 'os',
+        fs: 'fs',
+        events: 'events'
+    };
+    for (let [name, package] of Object.entries(packages)) global[name] = require(package);
+    debug('initialized npm packages.');
 
-    for (let i = 0; i < package_keys.length; i++) {
-        const key = package_keys[i];
-        const name = packages[key];
-        global[key] = require(name);
-    }
-    debug(`initilized npm packages.`);
-    
+    global['$'] = () => {};
     global['_'] = undefined;
+    let _chars = {
+        square: [9642],
+        circle: [8226],
+        '0': [48, 8419],
+        '1': [49, 8419],
+        '2': [50, 8419],
+        '3': [51, 8419],
+        '4': [52, 8419],
+        '5': [53, 8419],
+        '6': [54, 8419],
+        '7': [55, 8419],
+        '8': [56, 8419],
+        '9': [57, 8419],
+        '10': [55357, 56607],
+        left: [9664],
+        right: [9654],
+        up: [55357, 56636],
+        down: [55357, 56637],
+        left_double: [9194],
+        right_double: [9193],
+        up_double: [9195],
+        down_double: [9196],
+        accept: [9989],
+        reject: [55357, 57003],
+        subdir: [9493, 9473],
+        zwsp: [8203]
+    }
+    global['characters'] = {};
+    for (let [char, code] of Object.entries(_chars)) global['characters'][char] = String.fromCharCode(...code);
+    
     global['prefix'] = process.env.prefix;
-    global['randomInt'] = (x, y) => Math.floor(x + Math.random() * (y + 1 - x));
-    global['randomElement'] = obj => {
-        let keys = Object.keys(obj);
-        return obj[keys[randomInt(0, keys.length - 1)]];
-    }
-    global['base64'] = {
-        encode: t => Buffer.from(t).toString('base64'),
-        decode: t => Buffer.from(t, 'base64').toString()
-    }
-    global['urlEncode'] = t => {
-        let r = '';
-        let arr = t.split('');
-        for (let i = 0; i < arr.length; i++) {
-            r += `%${Buffer.from(arr[i]).toString('hex')}`;
-        }
-        return r;
-    }
-    global['firstWord'] = t => {
-        if (t.match(/\r\n|\r|\n|\t| /)) {
-            return t.slice(0, t.match(/\r\n|\r|\n|\t| /).index);
-        }
-        else {
-            return t;
-        }
-    }
-    global['shiftWord'] = t => {
-        let r = t.replace(firstWord(t), '');
-        return r.slice(1, r.length);
-    }
-    global['flipObject'] = o => {
-        let r = {};
-        let keys = Object.keys(o);
-        for (let i = 0; i < keys.length; i++) {
-            r[o[keys[i]]] = keys[i];
-        }
-        return r;
-    }
-    global['toLowerCaseKeys'] = o => {
-        let r = {};
-        let keys = Object.keys(o);
-        for (let i = 0; i < keys.length; i++) {
-            r[keys[i].toLowerCase()] = o[keys[i]];
-        }
-        return r;
-    }
-
-    global['tillNthOccurrence'] = (t, p, n) => {
-        let r = '';
-        let j = 0;
-        for (let i = 0; i < t.length; i++) {
-            const c = t[i];
-            if (c == p) j++;
-            if (j == n) break;
-            r += c;
-        }
-        return r;
-    }
-
-    global['Client'] = new Discord.Client();
-
-    debug(`initilized side functions`);
-
-    firebase_admin.initializeApp({
-        credential: firebase_admin.credential.cert(JSON.parse(process.env.firebase_key)),
-        databaseURL: process.env.firebase_url
+    global['client'] = new discord.Client({
+        disableEveryone: true
     });
-    global['database'] = firebase_admin.database();
-    
-    global['firebase'] = require('../modules/firebase');
-    global['mentions'] = require('../modules/mentions');
-    global['requestAsync'] = require('../modules/requestAsync');
-    global['response'] = require('../modules/response');
-    global['management'] = require('../modules/management');
+    debug('created client.');
 
-    debug(`initilized custom modules`);
+    for (let file of fs.readdirSync('./modules/initial')) {
+        const name = file.slice(0, file.lastIndexOf('.'));
+        global[name] = require(`../modules/initial/${file}`);
+    }
+    debug(`initialized initial modules.`);
 
-    global['bot'] = await firebase.get('/bot');
+    global['bot_data'] = await firebase.get('/bot');
+    debug(`initialized database cache.`);
 
-    let [r, b] = await requestAsync.get({
-        url: 'https://wandbox.org/api/list.json',
-        json: true,
-        headers: {'User-Agent': 'request'}
-    }).catch(console.error);
-
-    global['wandbox'] = {
-        compilers: {
-            normal: {},
-            lower: {}
-        },
-        languages: {
-            normal: [],
-            lower: []
-        },
-        compilers_arr: {
-            normal: [],
-            lower: []
-        },
-        compile: async (options, timeout) => {
-            let result = await requestAsync.post({
-                url: 'https://wandbox.org/api/compile.json',
-                body: options,
-                json: true,
-                timeout: timeout
-            }).catch(debug);
-            return result;
+    for (let file of fs.readdirSync('./modules')) {
+        if (file != 'initial') {
+            const name = file.slice(0, file.lastIndexOf('.'));
+            global[name] = require(`../modules/${file}`);
+            if (global[name].init) await global[name].init();
         }
     }
-    
-    for (let i = 0; i < b.length; i++) {
-        const compiler = b[i];
-        wandbox.compilers_arr.normal.push(compiler.name);
-        wandbox.compilers_arr.lower.push(compiler.name.toLowerCase());
-        if (!wandbox.compilers.normal[compiler.language]) {
-            wandbox.compilers.normal[compiler.language] = [];
-            wandbox.compilers.lower[compiler.language.toLowerCase()] = [];
-            wandbox.languages.normal.push(compiler.language);
-            wandbox.languages.lower.push(compiler.language.toLowerCase());
-        }
-        wandbox.compilers.normal[compiler.language].push(compiler.name);
-        wandbox.compilers.lower[compiler.language.toLowerCase()].push(compiler.name.toLowerCase());
-    }
-    [r, b] = [_, _];
-
-    debug(`initilized wandbox`);
+    debug(`initialized custom modules.`);
 }
-

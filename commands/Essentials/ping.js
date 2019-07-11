@@ -1,42 +1,30 @@
-module.exports = async message => {
-    try {
-        let msg, flag;
-        let cmd = shiftWord(message.content);
-        cmd = firstWord(cmd).toLowerCase();
-        if (bot.commands.cmds[cmd] && bot.commands.cmds[cmd] != 'ping') {
-            message.content = shiftWord(message.content);
-            try {
-                msg = await require(`../${bot.commands.files[bot.commands.cmds[cmd]]}`)(message);
-                flag = true;
-            } catch (error) {
-                debug(error);
-                return await response.error({
-                    message: message,
-                    error: 'Something went wrong, failed to fetch command'
-                });
-            }
-        }
-        else {
-            msg = await response.send({
-                message: message,
-                text: 'Ping?',
-                error: 'Something went wrong, ping.js isn\'t working properly. (1)'
-            });
-        }
-        let time = msg.createdTimestamp - message.createdTimestamp;
-        if (flag) msg = _;
-        return await response.send(response.create({
+module.exports = async({message, command, content}) => {
+    let msg, cmd, flag;
+    let _content = misc.string.shiftWord(content); 
+    if (_content) cmd = misc.string.firstWord(_content).toLowerCase();
+    if (commands.names[cmd]) {
+        msg = misc.array.last(await run({
             message: message,
-            title: 'Pong!',
-            edit: msg,
-            fields: {
-                'Reply Speed': `${time}ms`,
-                'Connection Speed': `${Math.round(Client.ping)}ms`
-            },
-            singleline: true,
-            error: 'Something went wrong, ping.js isn\'t working properly. (2)'
-        }))
-    } catch (error) {
-        debug(error);
+            content: _content,
+            cmd: cmd
+        }));
+        flag = true;
     }
+    else {
+        msg = await message.reply('Ping?');
+    }
+    if (!msg) return await response.create({
+        message: message,
+        error: 'Specified command didn\'t return response',
+        footer: `No response from specified command ${cmd}`
+    });
+    return await response.create({
+        message: message,
+        edit: flag ? _ : msg,
+        title: 'Pong!',
+        fields: {
+            'Reply Speed': `${msg.createdTimestamp - message.createdTimestamp}ms`,
+            'Connection Speed': `${Math.round(client.ping)}ms`
+        }
+    });
 }

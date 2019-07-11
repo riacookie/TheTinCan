@@ -1,7 +1,7 @@
 {
   "name": "thetincan",
-  "version": "2.0.0",
-  "description": "A simple discord.js tincan",
+  "version": "1.0.0",
+  "description": "Just another discord.js tincan.",
   "main": "index.js",
   "scripts": {
     "test": "node .",
@@ -12,12 +12,13 @@
     "url": "git+https://github.com/TheSkyHero/TheTinCan.git"
   },
   "keywords": [
-    "tincan",
+    "thetincan",
+    "ttc",
+    "discord.js",
+    "discord-bot",
     "discord",
     "bot",
-    "discord.js",
-    "thetincan",
-    "ttc"
+    "node.js"
   ],
   "author": "TheSkyHero",
   "license": "MIT",
@@ -26,10 +27,12 @@
   },
   "homepage": "https://github.com/TheSkyHero/TheTinCan#readme",
   "dependencies": {
-    "discord.js": "^11.5.0",
+    "discord.js": "^11.5.1",
     "dotenv": "^8.0.0",
-    "firebase-admin": "^7.3.0",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.2.0",
     "moment": "^2.24.0",
     "request": "^2.88.0"
-  }
+  },
+  "devDependencies": {}
 }
