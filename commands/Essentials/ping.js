@@ -2,7 +2,7 @@ module.exports = async({message, command, content}) => {
     let msg, cmd, flag;
     let _content = misc.string.shiftWord(content); 
     if (_content) cmd = misc.string.firstWord(_content).toLowerCase();
-    if (commands.names[cmd]) {
+    if (commands.names[cmd] && commands.names[cmd] != 'ping') {
         msg = misc.array.last(await run({
             message: message,
             content: _content,
