@@ -24,10 +24,12 @@ module.exports = async ({ message, content, command, used_command, options }) =>
         cmd: command,
         error: 'Code not provided'
     });
+    let stdin = options.stdin || options.i || options.input;
+    if (stdin != undefined) stdin = stdin.toString();
     let [res, body] = await wandbox.compile({
         code: code,
         compiler: data.compiler,
-        stdin: options.stdin || options.i || options.input || options.in
+        stdin: stdin
     });
     let result = {
         message: message,
