@@ -19,22 +19,21 @@ module.exports.parseOptions = o => {
     return options;
 }
 
-module.exports.parseField = (channelid, field, key = '', config = {}) => {
-    if (key) key = misc.formatting.plain(key);
-    if (key != '_') {
-        return ((key && !config.noKey) ? `**${key}${config.seperator || ' : '}**` : '') + misc.formatting.normal(field, channelid);
-    }
-    else {
-        return '**' + misc.formatting.normal(misc.formatting.plain(field), channelid) + '**';
-    }
+module.exports.parseField = (options, field, key = '', config = {}) => {
+    if (!config.seperator) config.seperator = ' : ';
+    if (key && !config.defaultKeys) key = misc.formatting.plain(key);
+    if (!config.defaultField) field = misc.formatting.normal(field, options);
+    if (key && !config.noKey && key != '_') return `**${key}${config.seperator}**${field}`;
+    if (key == '_') return `**${misc.formatting.plain(field)}**`;
+    return field;
 }
 
-module.exports.parseFields = async (fields = new Error(), start = '', config = {}, channelid, n = 0) => {
+module.exports.parseFields = async (fields = new Error('Empty field'), start = '', config = {}, options, n = 0) => {
     if (fields instanceof Error) {
-        return start + characters.square + ' ' + this.parseField(channelid, fields.message, fields.name, config);
+        return start + characters.square + ' ' + this.parseField(options, fields.message, fields.name, config);
     }
     else if (typeof fields == 'string' || typeof fields == 'number' || typeof fields == 'boolean' || [undefined, null].includes(fields)) {
-        return start + characters.square + ' ' + this.parseField(channelid, fields, _, config);
+        return start + characters.square + ' ' + this.parseField(options, fields, _, config);
     }
     else if (fields instanceof Object) {
         let r = [];
@@ -53,21 +52,20 @@ module.exports.parseFields = async (fields = new Error(), start = '', config = {
             }
             if (args) args.key = (i + 1).toString();
             if (typeof field == 'string' || typeof field == 'number' || typeof field == 'boolean' || [undefined, null].includes(field)) {
-                r.push(start + characters.square + ' ' + this.parseField(channelid, field, args ? args.key : key, args || cfg));
+                r.push(start + characters.square + ' ' + this.parseField(options, field, args ? args.key : key, args || cfg));
             }
             else {
                 let _start = misc.formatting.zwspWrap(' '.repeat(n * 4));
                 let _v = '';
                 if (field instanceof Array) _v = ` (${field.length})`;
-                
-                let s = start + characters.square + this.parseField(channelid, '', (args ? args.key : key) + _v, args || config);
-                if (cfg.title) s += misc.formatting.normal(cfg.title, channelid);
+                let s = start + characters.square + this.parseField(options, '', (args ? args.key : key) + _v, args || config);
+                if (cfg.title) s += misc.formatting.normal(cfg.title, options);
                 if (cfg.joinArr && field instanceof Array) {
-                    s += misc.formatting.normal(field.join(', '), channelid);
+                    s += misc.formatting.normal(field.join(', '), options);
                 }
                 else {
                     s += '\n';
-                    s += await this.parseFields(field, _start, cfg, channelid, n);
+                    s += await this.parseFields(field, _start, cfg, options, n);
                 }
                 r.push(s);
             }
@@ -82,7 +80,7 @@ module.exports.create = async options => {
     let data = [];
     let results = [];
     if (options.description) data.push(options.description);
-    if (options.fields) data.push(await this.parseFields(options.fields, '', options.fields_config, options.channel.id));
+    if (options.fields) data.push(await this.parseFields(options.fields, '', options.fields_config, options));
     if (options.permissions.EMBED_LINKS) {
         let r = {
             embed: {

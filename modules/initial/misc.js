@@ -236,10 +236,40 @@ module.exports.formatting.plain = str => {
     }
 }
 
-module.exports.formatting.normal = (_str, channelid) => {
+module.exports.formatting.normal = (_str, options) => {
     let str = _str;
     if (_str) {
-        str = _str.toString().replace(/\${channelid}/g, channelid).replace(/\${clientid}/g, client.id).replace(/\${prefix}/g, prefix).replace(/\${options_prefix}/g, process.env.options_prefix);
+        str = _str.toString();
+        str = str.replace(/\${(\w*)}/g, (s, m) => {
+            switch (m) {
+                case 'channel_id': {
+                    return options.channel.id;
+                }
+                case 'client_id': {
+                    return options.client.id
+                },
+                case 'prefix': {
+                    return prefix
+                },
+                case 'options_prefix': {
+                    return options_prefix
+                },
+                case 'channel_name': {
+                    return options.channel.name
+                },
+                case 'author_id': {
+                    return options.author.id
+                },
+                case 'author_username': {
+                    return options.author.username
+                }
+                case: 'author_tag': {
+                    return options.author.tag
+                }
+                default:
+                    return s;
+            }
+        })
         if (str && !(['.', '`', '?', '!'].includes(str[str.length-1]))) return str + '.';
     }
     return str;
