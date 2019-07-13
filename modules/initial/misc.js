@@ -263,7 +263,7 @@ module.exports.formatting.normal = (_str, options) => {
                 case 'author_username': {
                     return options.author.username;
                 }
-                case: 'author_tag': {
+                case 'author_tag': {
                     return options.author.tag;
                 }
                 default:
