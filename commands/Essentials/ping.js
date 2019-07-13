@@ -1,12 +1,13 @@
-module.exports = async({message, command, content}) => {
+module.exports = async({message, command, content, options}) => {
     let msg, cmd, flag;
     let _content = misc.string.shiftWord(content); 
-    if (_content) cmd = misc.string.firstWord(_content).toLowerCase();
-    if (commands.names[cmd] && commands.names[cmd] != 'ping') {
+    if (_content) cmd = misc.string.nthWord(_content, 1, / |\r|\n|\t|`/).toLowerCase();
+    if (cmd && commands.names[cmd] && commands.names[cmd] != 'ping') {
         msg = misc.array.last(await run({
             message: message,
             content: _content,
-            cmd: cmd
+            cmd: cmd,
+            options: options
         }));
         flag = true;
     }

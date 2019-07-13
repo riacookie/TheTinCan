@@ -34,7 +34,7 @@ module.exports = async () => {
     client.on('message', async message => {
         try {
             if (message.content.startsWith(prefix) && !message.author.bot && !management.isBlacklisted(message.author.id)) {
-                let cmd = misc.string.firstWord(message.content).replace(prefix, '').toLowerCase();
+                let cmd = misc.string.nthWord(message.content, 1, / |\r|\n|\t|`/).replace(prefix, '').toLowerCase();
                 if (commands.names[cmd]) await run({
                     message: message,
                     cmd: cmd
