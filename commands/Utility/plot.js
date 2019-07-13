@@ -20,6 +20,7 @@ module.exports = async ({ message, content, command }) => {
     });
     let result = {
         message: message,
+        title: `Graph of "${expression}"`
         image: {
             name: 'Graph.png',
             url: ''
