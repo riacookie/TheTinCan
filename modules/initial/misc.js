@@ -246,7 +246,13 @@ module.exports.formatting.normal = (_str, options) => {
                     return options.channel.id;
                 }
                 case 'client_id': {
-                    return options.client.id;
+                    return client.id;
+                }
+                case 'client_username': {
+                    return client.user.username;
+                }
+                case 'client_tag': {
+                    return client.user.tag;
                 }
                 case 'prefix': {
                     return prefix;
