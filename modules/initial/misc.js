@@ -246,25 +246,25 @@ module.exports.formatting.normal = (_str, options) => {
                     return options.channel.id;
                 }
                 case 'client_id': {
-                    return options.client.id
-                },
+                    return options.client.id;
+                }
                 case 'prefix': {
-                    return prefix
-                },
+                    return prefix;
+                }
                 case 'options_prefix': {
-                    return options_prefix
-                },
+                    return options_prefix;
+                }
                 case 'channel_name': {
-                    return options.channel.name
-                },
+                    return options.channel.name;
+                }
                 case 'author_id': {
-                    return options.author.id
-                },
+                    return options.author.id;
+                }
                 case 'author_username': {
-                    return options.author.username
+                    return options.author.username;
                 }
                 case: 'author_tag': {
-                    return options.author.tag
+                    return options.author.tag;
                 }
                 default:
                     return s;
