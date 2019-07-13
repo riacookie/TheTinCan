@@ -20,7 +20,7 @@ module.exports = async ({ message, content}) => {
     });
     let result = {
         message: message,
-        title: `Solution for "${problem}"`
+        title: `Solution for "${problem}"`,
         fields: {}
     };
     for (let pod of body.queryresult.pods) {
