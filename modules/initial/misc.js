@@ -246,7 +246,7 @@ module.exports.formatting.normal = (_str, options) => {
                     return options.channel.id;
                 }
                 case 'client_id': {
-                    return client.id;
+                    return client.user.id;
                 }
                 case 'client_username': {
                     return client.user.username;
