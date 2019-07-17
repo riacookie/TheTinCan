@@ -1,6 +1,6 @@
 module.exports = async ({message, content}) => {
     let data = await mentions.getUsers(misc.string.shiftWord(content), message, true, 1);
-    if (message.guild && message.guild.available && data.members.length == 0) data.members.push(await message.guild.fetchMember(message.author));
+    if (message.guild && message.guild.available && !data.members.length && !data.users.length) data.members.push(await message.guild.fetchMember(message.author));
     if (data.members.length > 0) {
         const member = data.members[0];
         return await response.create({
