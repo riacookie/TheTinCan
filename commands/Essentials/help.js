@@ -5,7 +5,9 @@ for (let category in commands.categories) {
     bot_data.categories[category] = {};
     for (const cmd of commands.categories[category]) {
         bot_data.categories[category][cmd] = bot_data.commands[cmd].about;
+        debug(`Category : ${category}; Command : ${cmd}`);
     }
+    debug(bot_data.categories[category]);
 }
 
 module.exports = async ({message, content, used_command, command, options}) => {
