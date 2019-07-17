@@ -236,10 +236,9 @@ module.exports.formatting.plain = str => {
     }
 }
 
-module.exports.formatting.normal = (_str, options) => {
-    let str = _str;
-    if (_str) {
-        str = _str.toString();
+module.exports.formatting.parseVariables = (str, options) => {
+    str = str.toString();
+    if (str) {
         str = str.replace(/\${(\w*)}/g, (s, m) => {
             switch (m) {
                 case 'channel_id': {
@@ -275,7 +274,14 @@ module.exports.formatting.normal = (_str, options) => {
                 default:
                     return s;
             }
-        })
+        });
+    }
+    return str;
+}
+
+module.exports.formatting.normal = (str) => {
+    if (str) {
+        str = str.toString();
         if (str && !(['.', '`', '?', '!'].includes(str[str.length-1]))) return str + '.';
     }
     return str;

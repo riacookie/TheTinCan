@@ -22,7 +22,8 @@ module.exports.parseOptions = o => {
 module.exports.parseField = (options, field, key = '', config = {}) => {
     if (!config.seperator) config.seperator = ' : ';
     if (key && !config.defaultKeys) key = misc.formatting.plain(key);
-    if (!config.defaultField) field = misc.formatting.normal(field, options);
+    if (!config.defaultField) field = misc.formatting.normal(field);
+    if (config.parseVariables) field =  misc.formatting.parseVariables(field);
     if (key && !config.noKey && key != '_') return `**${key}${config.seperator}**${field}`;
     if (key == '_') return `**${misc.formatting.plain(field)}**`;
     return field;

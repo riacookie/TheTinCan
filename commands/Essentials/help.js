@@ -4,7 +4,8 @@ module.exports = async ({message, content, used_command, command, options}) => {
         message: message,
         footer: [`Prefix : ${prefix}`, `Options prefix : ${process.env.options_prefix}`],
         fields_config: {
-            joinArr: true
+            joinArr: true,
+            parseVariables: true
         }
     }
     if (!options.list && !options.command && !options.topic) {
@@ -25,9 +26,6 @@ module.exports = async ({message, content, used_command, command, options}) => {
             fields: {
                 Commands: `Type \`${prefix}help commands\` to see a list of commands`,
                 ...topics
-            },
-            fields_config: {
-                joinArr: true
             }
         });
     }
@@ -56,8 +54,10 @@ module.exports = async ({message, content, used_command, command, options}) => {
             ...defaults,
             fields_config: {
                 Examples: {
-                    joinArr: false
-                }
+                    joinArr: false,
+                    parseVariables: true
+                },
+                parseVariables: true
             }
         });
     }
@@ -67,7 +67,8 @@ module.exports = async ({message, content, used_command, command, options}) => {
         ...defaults,
         fields_config: {
             joinArr: true,
-            defaultKeys: true
+            defaultKeys: true,
+            parseVariables: true
         }
     });
     else return await response.create({
