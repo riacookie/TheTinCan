@@ -12,6 +12,7 @@ for (let folder of fs.readdirSync('./commands')) {
 
 debug(`initialized command files.`);
 
+bot_data.categories = {};
 for (command in bot_data.commands) {
     global['commands'].names[command] = command;
     if (bot_data.commands[command].aliases) {
@@ -19,8 +20,12 @@ for (command in bot_data.commands) {
             global['commands'].names[cmd] = command
         };
     }
-    if (!commands.categories[bot_data.commands[command].category]) commands.categories[bot_data.commands[command].category] = [];
+    if (!commands.categories[bot_data.commands[command].category]) {
+        commands.categories[bot_data.commands[command].category] = [];
+        bot_data.categories[bot_data.commands[command].category.toLowerCase()] = {};
+    }
     commands.categories[bot_data.commands[command].category].push(command)
+    bot_data.categories[bot_data.commands[command].category.toLowerCase()][command] = bot_data.commands[command].about;
 }
 
 async function parseOptions(str, keys = []) {
