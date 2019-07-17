@@ -45,7 +45,7 @@ module.exports = async () => {
     for (let [char, code] of Object.entries(_chars)) global['characters'][char] = String.fromCharCode(...code);
     
     global['prefix'] = process.env.prefix;
-    gloal['options_prefix'] = process.env.options_prefix;
+    global['options_prefix'] = process.env.options_prefix;
     global['client'] = new discord.Client({
         disableEveryone: true
     });
