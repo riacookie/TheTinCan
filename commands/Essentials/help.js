@@ -64,7 +64,11 @@ module.exports = async ({message, content, used_command, command, options}) => {
     else if (options.topic) return await response.create({
         title: `Topics/${options.topic}`,
         fields: bot_data.topics[options.topic],
-        ...defaults
+        ...defaults,
+        fields_config: {
+            joinArr: true,
+            defaultKeys: true
+        }
     });
     else return await response.create({
         error: 'Invalid arguments',
