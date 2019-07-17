@@ -1,10 +1,10 @@
 bot_data.categories = {};
 
-for (const category in commands.categories) {
+for (let category in commands.categories) {
+    category = category.toLowerCase();
     bot_data.categories[category] = {};
     for (const cmd of commands.categories[category]) {
-        const command = bot_data.commands[cmd];
-        bot_data.categories[command.category][cmd] = command.about;
+        bot_data.categories[category][cmd] = bot_data.commands[cmd].about;
     }
 }
 
