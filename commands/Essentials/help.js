@@ -26,7 +26,7 @@ module.exports = async ({message, content, used_command, command, options}) => {
         else if (bot_data.topics[arg]) options.topic = arg;
         else if (bot_data.categories[arg]) options.category = arg;
     }
-    if (!Object.keys(options).length)) {
+    if (!Object.keys(options).length) {
         let topics = {};
         for (let t in bot_data.topics) {
             topics[t] = `Type \`${prefix}help ${t}\` to see a list of ${bot_data.topics[t]._}`;
