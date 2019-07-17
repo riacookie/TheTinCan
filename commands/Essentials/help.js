@@ -1,8 +1,11 @@
 bot_data.categories = {};
-for (const cmd of bot_data.commands) {
-    const command = bot_data.commands[cmd];
-    if (!bot_data.categories[command.category]) bot_data.categories[command.category] = {};
-    bot_data.categories[command.category][cmd] = command.about;
+
+for (const category in commands.categories) {
+    bot_data.categories[category] = {};
+    for (const cmd of commands.categories[category]) {
+        const command = bot_data.commands[cmd];
+        bot_data.categories[command.category][cmd] = command.about;
+    }
 }
 
 module.exports = async ({message, content, used_command, command, options}) => {
