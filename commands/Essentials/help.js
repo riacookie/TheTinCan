@@ -1,3 +1,10 @@
+bot_data.categories = {};
+for (const cmd of bot_data.commands) {
+    const command = bot_data.commands[cmd];
+    if (!bot_data.categories[command.category]) bot_data.categories[command.category] = {};
+    bot_data.categories[command.category][cmd] = command.about;
+}
+
 module.exports = async ({message, content, used_command, command, options}) => {
     let arg = misc.string.shiftWord(content).toLowerCase();
     let defaults = {
@@ -14,6 +21,7 @@ module.exports = async ({message, content, used_command, command, options}) => {
     if (!options.list && !options.command && !options.topic && arg) {
         if (commands.names[arg]) options.command = commands.names[arg];
         else if (bot_data.topics[arg]) options.topic = arg;
+        else if (bot_data.categories[arg]) options.category = arg;
     }
     if (!options.list && !options.command && !options.topic) {
         let topics = {};
@@ -47,6 +55,7 @@ module.exports = async ({message, content, used_command, command, options}) => {
             title: `Commands/${cmd.category}/${options.command}`,
             fields: {
                 Category: cmd.category,
+                Aliases: cmd.aliases.length ? cmd.aliases.join(', ') : 'None',
                 About: cmd.about,
                 Syntax: cmd.syntax,
                 Examples: cmd.examples
@@ -54,7 +63,6 @@ module.exports = async ({message, content, used_command, command, options}) => {
             ...defaults,
             fields_config: {
                 Examples: {
-                    joinArr: false,
                     parseVariables: true
                 },
                 parseVariables: true
@@ -71,8 +79,13 @@ module.exports = async ({message, content, used_command, command, options}) => {
             parseVariables: true
         }
     });
+    else if (options.category)  return await response.create({
+        title: `Commands/${options.category}`,
+        fields: bot_data.categories[options.category],
+        ...defaults
+    });
     else return await response.create({
         error: 'Invalid arguments',
         ...defaults
-    })
+    });
 }
