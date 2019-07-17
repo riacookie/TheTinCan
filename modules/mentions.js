@@ -110,11 +110,13 @@ module.exports.getCompiler = async content => {
 }
 
 module.exports.getCode = async content => {
+    if (content.includes('```')) {
+        content = content.slice(0, content.lastIndexOf('```'));
+    }
     if (misc.string.firstWord(content).startsWith('```')) {
-        let a = content.slice(0, content.lastIndexOf('```'));
         let r = misc.string.shiftWord(a);
         if (r) return r;
-        else return a.slice(a.indexOf('```') + '```'.length);
+        else return content.slice(content.indexOf('```') + '```'.length);
     }
     else return content;
 }
