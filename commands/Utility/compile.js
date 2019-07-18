@@ -43,10 +43,10 @@ module.exports = async ({ message, content, command, used_command, options }) =>
             result.fields.Output = misc.formatting.codeBlockLimited(body.program_output, '', {lines: 15, characters: 1000}, 'output');
         }
         if (body.program_error) {
-            result.fields.Error = misc.formatting.codeBlockLimited(body.program_error, 'fix', {lines: 15, char: 1000}, 'error');
+            result.fields.Error = misc.formatting.codeBlockLimited(body.program_error, 'fix', {lines: 15, characters: 1000}, 'error');
         }
         if (body.compiler_error) {
-            result.fields['Compiler error'] = misc.formatting.codeBlockLimited(body.compiler_error, 'fix', {lines: 15, char: 1000}, 'error');
+            result.fields['Compiler error'] = misc.formatting.codeBlockLimited(body.compiler_error, 'fix', {lines: 15, characters: 1000}, 'error');
         }
         if (body.status) {
             result.fields['Exit code'] = body.status;
