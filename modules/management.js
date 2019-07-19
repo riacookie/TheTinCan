@@ -46,21 +46,9 @@ module.exports.removeBlacklist = async userid => {
 }
 
 module.exports.refresh = async () => global['bot_data'] = await firebase.get('/bot');
-module.exports.disable = async guild => {
-    if (!bot_data.sever_blacklists[guild]) {
-        bot_data.sever_blacklists[guild] = true;
-        await firebase.set(`/bot/sever_blacklists/${guild}`, true);
-    }
-}
 module.exports.leave = async guildid => {
     const guild = client.guilds.find(g => g.id == guildid);
     if (guild) {
         await guild.leave();
-    }
-}
-module.exports.enable = async guild => {
-    if (!bot_data.sever_blacklists[guild]) {
-        delete bot_data.sever_blacklists[guild];
-        await firebase.remove(`/bot/sever_blacklists/${guild}`);
     }
 }
