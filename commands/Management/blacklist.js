@@ -1,6 +1,6 @@
 module.exports = async ({message, content}) => {
-    const id = await management.identity.get(message.author.id);
-    if (!id) {
+    const identity = await management.identity.get(message.author.id);
+    if (!identity.permissions.includes('BLACKLIST')) {
         return await response.create({
             message: message,
             error: 'You don\'t have permission to use this command'
@@ -17,8 +17,8 @@ module.exports = async ({message, content}) => {
         message: message,
         error: 'Invalid user'
     });
-    const target_id = await management.identity.get(user.id);
-    if (target_id >= id) return await response.create({
+    const target_identity = await management.identity.get(user.id);
+    if (target_identity.id >= identity.id) return await response.create({
         message: message,
         error: 'Specified user\'s identity must be lower than yours'
     });

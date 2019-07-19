@@ -47,7 +47,9 @@ module.exports = async () => {
     global['prefix'] = process.env.prefix;
     global['options_prefix'] = process.env.options_prefix;
     global['client'] = new discord.Client({
-        disableEveryone: true
+        disableEveryone: true,
+        messageCacheLifetime: 60,
+        messageSweepInterval: 300
     });
     debug('created client.');
 

@@ -1,24 +1,25 @@
-module.exports.identity = {};
-module.exports.identity.lowerFlippedIdentities = misc.object.toLowerCaseKeys(misc.object.flipObject(bot_data.identities));
-
-module.exports.identity.getName = str => {
-    if (bot_data.identities[str]) return bot_data.identities[str];
-    str = str.toLowerCase();
-    let pos = this.identity.lowerFlippedIdentities[str];
-    if (pos) return bot_data.identities[pos];
+module.exports.identityList = {};
+for (const key in bot_data.identities) {
+    this.identityList[key.toLowerCase()] = key;
+    const id = bot_data.identities[key];
+    this.identityList[id.id] = key;
+    if (id.aliases) {
+        for (const alias of id.aliases) {
+            this.identityList[alias.toLowerCase()] = key;
+        }
+    }
+    bot_data.identities[key].name = key;
 }
 
-module.exports.identity.getPosition = str => {
-    if (bot_data.identities[str]) return Number(str);
-    str = str.toLowerCase();
-    let pos = this.identity.lowerFlippedIdentities[str];
-    if (pos) return Number(pos);
+module.exports.identity = str => {
+    const id = this.identityList[str.toLowerCase()];
+    if (id) return bot_data.identities[id];
 }
 
 module.exports.identity.get = async userid => {
     let data = await firebase.get(`/users/${userid}`);
-    if (data && data.id) return Number(data.id);
-    return 0;
+    if (data && data.id) return bot_data.identities[data.id];
+    return bot_data.identities[0];
 }
 
 module.exports.identity.set = async (userid, identity) => {
@@ -45,3 +46,21 @@ module.exports.removeBlacklist = async userid => {
 }
 
 module.exports.refresh = async () => global['bot_data'] = await firebase.get('/bot');
+module.exports.disable = async guild => {
+    if (!bot_data.sever_blacklists[guild]) {
+        bot_data.sever_blacklists[guild] = true;
+        await firebase.set(`/bot/sever_blacklists/${guild}`, true);
+    }
+}
+module.exports.leave = async guildid => {
+    const guild = client.guilds.find(g => g.id == guildid);
+    if (guild) {
+        await guild.leave();
+    }
+}
+module.exports.enable = async guild => {
+    if (!bot_data.sever_blacklists[guild]) {
+        delete bot_data.sever_blacklists[guild];
+        await firebase.remove(`/bot/sever_blacklists/${guild}`);
+    }
+}

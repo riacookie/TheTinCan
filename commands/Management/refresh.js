@@ -1,6 +1,6 @@
 module.exports = async ({message, content}) => {
-    const id = await management.identity.get(message.author.id);
-    if (id < 2) return await response.custom({
+    const identity = await management.identity.get(message.author.id);
+    if (!identity.permissions.includes('REFRESH')) return await response.custom({
         message: message,
         error: 'You don\'t have permission to use this command'
     });
