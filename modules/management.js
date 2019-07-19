@@ -17,9 +17,9 @@ module.exports.identity = str => {
 }
 
 module.exports.identity.get = async userid => {
-    let data = await firebase.get(`/users/${userid}`);
-    if (data && data.id) return bot_data.identities[data.id];
-    return bot_data.identities[0];
+    let id = await firebase.get(`/users/${userid}/id`);
+    if (id) return bot_data.identities[this.identityList[id]];
+    return bot_data.identities[this.identityList[0]];
 }
 
 module.exports.identity.set = async (userid, identity) => {
