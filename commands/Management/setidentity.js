@@ -30,7 +30,7 @@ module.exports = async ({message, content}) => {
         message: message,
         error: 'Specified user already has specified identity'
     });
-    await management.identity.set(user.id, pos);
+    await management.identity.set(user.id, mentioned_identity.id);
     return await response.create({
         message: message,
         fields: `Changed ${user.tag} (${user.id})'s identity from ${target_identity.name} (${target_identity.id}) to ${mentioned_identity.name} (${mentioned_identity.id})`,
