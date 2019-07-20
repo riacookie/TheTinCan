@@ -9,6 +9,8 @@ global['boot_time'] = new Date().getTime();
     }
     await require('./runtime/globals')();
     debug(`initialized /runtime/globals.js.`);
+    require('./runtime/webserver')();
+    debug(`initialized /runtime/webserver.js.`);
     await require('./runtime/bot.js')();
     debug(`initialized /runtime/bot.js.`);
 })();
