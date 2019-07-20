@@ -1,14 +1,9 @@
 module.exports.reactionInteraction = async (message, userid, arr) => {
     for (const i of arr) {
-        if (!message.reactions.find(r => r.emoji.name == i && r.me)) {
-            await message.react(i).catch($);
-        }
+        if (!message.reactions.find(r => r.emoji.name == i && r.me)) await message.react(i).catch($);
     }
     return message.createReactionCollector(
-        (r, u) => {
-            let i = arr.indexOf(r.emoji.name);
-            return i != -1 && u.id == userid;
-        },
+        (r, u) => arr.indexOf(r.emoji.name) != -1 && u.id == userid,
         { max: 1, time: 15000 }
     );
 }
