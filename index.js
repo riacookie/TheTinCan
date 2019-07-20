@@ -1,12 +1,8 @@
 global['boot_time'] = new Date().getTime();
 (async () => {
+    if (!process.env.prefix) require('dotenv').config();
     global['debug'] = require('./runtime/debug').debug;
     debug(`initialized /rutime/debug.js.`);
-    if (!process.env.live) {
-        debug(`project isn't live, parsing environment variables with dotenv...`);
-        require('dotenv').config();
-        debug(`parsed environment variables.`);
-    }
     await require('./runtime/globals')();
     debug(`initialized /runtime/globals.js.`);
     require('./runtime/webserver')();

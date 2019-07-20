@@ -12,15 +12,21 @@ module.exports.getCaller = () => {
     return r.getFileName() + ':' + r.getLineNumber();
 }
 
+module.exports.write = str => {
+    if (!process.env.no_colors) process.stdout.write(str);
+}
+
 module.exports.debug = (...messages) => {
-    process.stdout.write(`\x1b[1m\x1b[36m${`[${this.getCaller()}] : `}\x1b[22m\x1b[0m`);
+    this.write('\x1b[1m\x1b[36m');
+    process.stdout.write(`[${this.getCaller()}] : `);
+    this.write('\x1b[22m\x1b[0m');
     let flag = false;
     for (let i = 0; i < messages.length; i++) {
         const message = messages[i];
         if (message instanceof Error) {
-            process.stdout.write('\x1b[31m');
+            this.write('\x1b[31m');
             console.error(message);
-            process.stdout.write('\x1b[0m');
+            this.write('\x1b[0m');
             flag = true;
         }
         else if (typeof message != 'string') {
@@ -28,9 +34,9 @@ module.exports.debug = (...messages) => {
             flag = true;
         }
         else {
-            process.stdout.write("\x1b[1m\x1b[32m'");
+            this.write("\x1b[1m\x1b[32m'");
             process.stdout.write(message);
-            process.stdout.write("'\x1b[22m\x1b[0m ");
+            this.write("'\x1b[22m\x1b[0m ");
             flag = false;
         } 
     }
