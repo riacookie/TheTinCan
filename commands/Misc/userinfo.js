@@ -1,5 +1,15 @@
 module.exports = async ({message, content}) => {
-    let data = await mentions.getUsers(misc.string.shiftWord(content), message, true, 1);
+    let data = {
+        members: [],
+        users: []
+    };
+    if (misc.string.wordAmount(content) > 1) {
+        data = await mentions.getUsers(misc.string.shiftWord(content), message, true, 1);
+        if (!data.users.length) return await response.create({
+            message: message,
+            error: 'Can\'t find specified user'
+        });
+    }
     if (message.guild && message.guild.available && !data.members.length && !data.users.length) data.members.push(await message.guild.fetchMember(message.author));
     if (data.members.length > 0) {
         const member = data.members[0];
