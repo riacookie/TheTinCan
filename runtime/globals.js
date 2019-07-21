@@ -1,6 +1,5 @@
 module.exports = async () => {
     let packages = {
-        http: 'http',
         express: 'express',
         request: 'request',
         firebase_admin: 'firebase-admin',
