@@ -212,9 +212,9 @@ module.exports.random = {};
 
 module.exports.random.int = (x, y) => Math.floor(x + Math.random() * (y + 1 - x));
 module.exports.random.element = obj => {
-    if (!obj instanceof Array) {
-        let keys = Object.keys(obj);
-        return obj[keys[this.random.int(0, keys.length - 1)]];
+    if (!(obj instanceof Array)) {
+        let values = Object.values(obj);
+        return values[this.random.int(0, values.length - 1)];
     }
     return obj[this.random.int(0, obj.length)];
 }

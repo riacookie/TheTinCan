@@ -114,7 +114,7 @@ module.exports.getCode = async content => {
         content = content.slice(0, content.lastIndexOf('```'));
     }
     if (misc.string.firstWord(content).startsWith('```')) {
-        let r = misc.string.shiftWord(a);
+        let r = misc.string.shiftWord(content);
         if (r) return r;
         else return content.slice(content.indexOf('```') + '```'.length);
     }
