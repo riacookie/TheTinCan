@@ -287,7 +287,7 @@ module.exports.formatting.normal = (str) => {
     return str;
 }
 
-module.exports.formatting.codeBlock = (text, lang, limits, name) => `\`\`\`${lang}\n${text.replace(/```/gi, this.formatting.zwspWrap(text))}\`\`\``;
+module.exports.formatting.codeBlock = (text, lang) => `\`\`\`${lang}\n${text.replace(/```/gi, this.formatting.zwspWrap(text))}\`\`\``;
 
 module.exports.formatting.codeBlockLimited = (str, lang, limit, name) => {
     if (limit) {
@@ -295,7 +295,7 @@ module.exports.formatting.codeBlockLimited = (str, lang, limit, name) => {
         let r = str;
         let f = [''];
         if (r.length > limit.characters) {
-            r = r.slice(0, limits.characters);
+            r = r.slice(0, limit.characters);
             f.push(`${name || 'result'} contained too much characters, Maximum character limit : ${limit.characters}.`);
         }
         if (n > limit.lines) {
