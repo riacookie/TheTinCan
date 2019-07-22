@@ -6,6 +6,6 @@ module.exports = async ({message, content}) => {
     });
     return await response.create({
         message: message,
-        fields: eval(mentions.getCode(misc.string.shiftWord(content)))
+        fields: eval(await mentions.getCode(misc.string.shiftWord(content)))
     });
 }
