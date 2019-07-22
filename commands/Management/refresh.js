@@ -6,7 +6,7 @@ module.exports = async ({message, content}) => {
     });
     global['bot_data'] = await firebase.get('/bot');
     debug(`refreshed database cache.`);
-    return await response.custom({
+    return await response.create({
         message: message,
         fields: 'Successfully refreshed database cache'
     });

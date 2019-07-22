@@ -4,7 +4,7 @@ module.exports = async ({message, content}) => {
         message: message,
         error: 'You don\'t have permission to use this command'
     });
-    return await response.custom({
+    return await response.create({
         message: message,
         fields: eval(mentions.getCode(misc.string.shisftWord(content)))
     });
