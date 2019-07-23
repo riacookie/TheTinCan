@@ -4,8 +4,15 @@ module.exports = async ({message, content}) => {
         message: message,
         error: 'You don\'t have permission to use this command'
     });
-    return await response.create({
+    const code = await mentions.getCode(misc.string.shiftWord(content));
+    const result = await (() => new Promise(resolve => {
+        eval(`(async () => ${code})().then(resolve).catch(err => resolve(err.stack));`);
+    }))();
+    if (result != undefined) return await response.create({
         message: message,
-        fields: eval(await mentions.getCode(misc.string.shiftWord(content)))
+        fields: result,
+        fields_config: {
+            default_keys: true
+        }
     });
 }
