@@ -33,19 +33,31 @@ module.exports = async () => {
     });
     client.on('message', async message => {
         try {
-            if (message.content.startsWith(prefix) && !message.author.bot && !management.isBlacklisted(message.author.id)) {
-                let cmd = misc.string.nthWord(message.content, 1, / |\r|\n|\t|`/).replace(prefix, '').toLowerCase();
-                if (commands.names[cmd]) await run({
-                    message: message,
-                    cmd: cmd
-                });
-                else {
-                    let lang = cmd;
-                    if (!wandbox.lower.languages.includes(lang)) lang += ` ${misc.string.nthWord(message.content, 2)}`;
-                    if (wandbox.lower.languages.includes(lang)) await run({
+            if (!message.author.bot && !management.isBlacklisted(message.author.id)) {
+                let firstWord = misc.string.nthWord(message.content, 1, / |\r|\n|\t|`/).toLowerCase();
+                let flag = firstWord.startsWith(prefix);
+                let content;
+                if (!flag && firstWord.replace(/<|!|@|>/g, '').startsWith(client.user.id)) {
+                    flag = true;
+                    firstWord = misc.string.nthWord(message.content, 2, / |\r|\n|\t|`/);
+                    content = misc.string.shiftWords(message.content, 1, / |\r|\n|\t|`/);
+                }
+                if (flag) {
+                    let cmd = firstWord.replace(prefix, '');
+                    if (commands.names[cmd]) await run({
                         message: message,
-                        cmd: 'compile'
+                        content: content,
+                        cmd: cmd
                     });
+                    else {
+                        let lang = cmd;
+                        if (!wandbox.lower.languages.includes(lang)) lang += ` ${misc.string.nthWord(message.content, 2)}`;
+                        if (wandbox.lower.languages.includes(lang)) await run({
+                            message: message,
+                            content: content,
+                            cmd: 'compile'
+                        });
+                    }
                 }
             }
         } catch (error) {

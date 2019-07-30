@@ -18,7 +18,7 @@ module.exports = async ({message, content}) => {
             Color: role.hexColor,
             Mentionable: role.mentionable,
             'Displayed members seperately': role.hoist,
-            'Created At': moment.utc(role.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss")
+            'Created At': moment.utc(role.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss") + ' (UTC)'
         },
         color: role.color
     });

@@ -23,8 +23,8 @@ module.exports = async ({message, content}) => {
                 Status: member.user.presence.status,
                 'Display Name': member.displayName,
                 Roles: member.roles.map(r => r.name).filter(n => n != '@everyone').join(', ') || 'None',
-                'Guild joined at': moment.utc(member.joinedAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
-                'Account created at': moment.utc(member.user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
+                'Guild joined at': moment.utc(member.joinedAt).format('dddd, MMMM Do YYYY, HH:mm:ss') + ' (UTC)',
+                'Account created at': moment.utc(member.user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss') + ' (UTC)',
                 Avatar: member.user.displayAvatarURL
             },
             thumbnail: member.user.displayAvatarURL,
@@ -42,7 +42,7 @@ module.exports = async ({message, content}) => {
             Tag: user.tag,
             ID: user.id,
             Status: user.presence.status == 'offline' ? 'unknown' : user.presence.status,
-            'Account created at': moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss'),
+            'Account created at': moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss') + ' (UTC)',
             Avatar: user.displayAvatarURL
         },
         thumbnail: user.displayAvatarURL,

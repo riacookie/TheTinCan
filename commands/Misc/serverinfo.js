@@ -14,7 +14,7 @@ module.exports = async ({message, content}) => {
             Members: message.guild.memberCount,
             Roles: message.guild.roles.size - 1,
             Icon: message.guild.iconURL,
-            'Created At': moment.utc(message.guild.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss"),
+            'Created At': moment.utc(message.guild.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss") + ' (UTC)',
             Region: message.guild.region
         },
         thumbnail: message.guild.iconURL

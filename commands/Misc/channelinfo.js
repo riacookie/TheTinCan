@@ -16,7 +16,7 @@ module.exports = async ({message, content}) => {
             Name: channel.name,
             ID: channel.id,
             Type: channel.type,
-            'Created At': moment.utc(channel.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss"),
+            'Created At': moment.utc(channel.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss") + ' (UTC)',
             'Category': channel.parent ? channel.parent.name : 'None'
         }
     });
