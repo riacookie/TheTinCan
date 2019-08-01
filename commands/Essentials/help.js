@@ -48,7 +48,7 @@ module.exports = async ({message, content, used_command, command, options}) => {
             title: `Commands/${cmd.category}/${options.command}`,
             fields: {
                 Category: cmd.category,
-                Aliases: cmd.aliases.length ? cmd.aliases.join(', ') : 'None',
+                Aliases: cmd.aliases && cmd.aliases.length ? cmd.aliases.join(', ') : 'None',
                 About: cmd.about,
                 Syntax: cmd.syntax,
                 Examples: cmd.examples
