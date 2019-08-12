@@ -30,9 +30,10 @@ for (command in bot_data.commands) {
 
 async function parseOptions(str, keys = []) {
     let options = {};
-    let arr = str.split(/ +; +| +, +| +;| +,|; +|, +|;|,| +-- +| +--|-- +|--| +- +| +-|- +|-/);
+    let arr = str.split(/(?: +)?(?:;|,|--|-)(?: +)?/);
     let flag = str.includes(':') || str.includes('=') || str.includes('-');
     if (!flag) {
+        arr = Array.prototype.concat.apply([], arr.map(_ => _.split(/ +/)));
         if (keys.length == 0) options = [];
         for (let i = 0; i < arr.length; i++) {
             let option = misc.normalizeType(arr[i].trim());
@@ -44,7 +45,7 @@ async function parseOptions(str, keys = []) {
         for (let i = 0; i < arr.length; i++) {
             const option = arr[i].trim();
             if (option) {
-                const m = option.match(/ +: +| +:|: +|:| += +| +=|= +|=| +/);
+                const m = option.match(/(?: +)?(?:\:|=| +)(?: +)?/);
                 if (m) {
                     let v = misc.normalizeType(option.slice(m.index + m[0].length).trim());
                     if (v == '') v = true;

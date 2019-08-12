@@ -26,11 +26,11 @@ module.exports = async ({ message, content, command, used_command, options }) =>
     });
     let stdin = options.stdin || options.i || options.input;
     if (stdin != undefined) stdin = stdin.toString();
-    let [res, body] = await wandbox.compile({
+    let [res, body] = (await wandbox.compile({
         code: code,
         compiler: data.compiler,
         stdin: stdin
-    });
+    })) || [];
     let result = {
         message: message,
         cmd: command,

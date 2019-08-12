@@ -1,4 +1,5 @@
-module.exports = async ({message, content}) => {
+module.exports = async (args) => {
+    const {message, content} = args;
     const identity = await management.identity.get(message.author.id);
     if (!identity.permissions.includes('EXECUTE')) return await response.create({
         message: message,
