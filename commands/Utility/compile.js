@@ -37,7 +37,7 @@ module.exports = async ({ message, content, command, used_command, options }) =>
         title: 'Compilation result',
         fields: {}
     };
-    if (!body) result.fields.Error = misc.string.formatting.codeBlock('Program timed out.', 'fix');
+    if (!body) result.fields.Error = misc.formatting.codeBlock('Program timed out.', 'fix');
     else {
         if (body.program_output) {
             result.fields.Output = misc.formatting.codeBlockLimited(body.program_output, '', {lines: 15, characters: 1000}, 'output');
