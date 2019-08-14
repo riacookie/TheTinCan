@@ -216,7 +216,7 @@ module.exports.random.element = obj => {
         let values = Object.values(obj);
         return values[this.random.int(0, values.length - 1)];
     }
-    return obj[this.random.int(0, obj.length)];
+    return obj[this.random.int(0, obj.length - 1)];
 }
 module.exports.random.boolean = () => Math.round(Math.random()) == 1;
 
