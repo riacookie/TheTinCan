@@ -127,6 +127,7 @@ module.exports.create = async options => {
         if (options.title) r +=`**${options.title} :**\n`;
         r += data.join('\n');
         if (options.image) r += '\n' + options.image.url;
+        results.push(r);
     }
     if (options.files && options.permissions.ATTACH_FILES) {
         results.push({
