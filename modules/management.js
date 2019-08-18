@@ -1,5 +1,6 @@
 module.exports.identityList = {};
 for (const key in bot_data.identities) {
+    if (!bot_data.identities[key].permissions) bot_data.identities[key].permissions = [];
     this.identityList[key.toLowerCase()] = key;
     const id = bot_data.identities[key];
     this.identityList[id.id] = key;
