@@ -30,7 +30,7 @@ module.exports = async ({ message, content, command, used_command, options }) =>
         code: code,
         compiler: data.compiler,
         stdin: stdin
-    })) || [];
+    }));
     let result = {
         message: message,
         cmd: command,
